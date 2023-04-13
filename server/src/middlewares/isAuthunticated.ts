@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
 import { getUserBySessionToken } from "../models/User";
 
 export const isAuthunticated = async (
   req: Request,
   res: Response,
-  next: any
+  next: NextFunction
 ) => {
   try {
     const token = req.cookies.copilote_auth;
