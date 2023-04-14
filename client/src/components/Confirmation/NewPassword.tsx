@@ -1,0 +1,34 @@
+import { Distination } from "../../interfaces&types/Distination";
+import AcceptTerms from "../shared/Input/AcceptTerms";
+import Input from "../shared/Input/Input";
+import LinkSwitcher from "../shared/Link/LinkSwitcher";
+import Text from "../shared/Text/Text";
+import SignBtn from "../shared/btns/SignBtn";
+
+const NewPassword = () => {
+  const dist: Distination = {
+    text: "Terms & Conditions",
+    to: "/auth",
+  };
+  return (
+    <section className="text-center space-y-7">
+      <div>
+        <h2 className="text-2xl/9 text-main_color font-semibold">
+          Setup New Password
+        </h2>
+        <div className="flex items-center gap-x-1">
+          <Text text="Have you already reset the password?" />
+          <LinkSwitcher to="/auth" text="Sign in" />
+        </div>
+      </div>
+      <form action="" className="flex flex-col gap-y-5">
+        <Input placeholderType="Password" checkLenght={true} />
+        <Input placeholderType="Repeat Password" />
+      </form>
+      <AcceptTerms text="I Agree & " dist={dist} />
+      <SignBtn text="Submit" />
+    </section>
+  );
+};
+
+export default NewPassword;

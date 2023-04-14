@@ -1,6 +1,12 @@
 import LinkSwitcher from "../Link/LinkSwitcher";
+import { Distination } from "../../../interfaces&types/Distination";
 
-const AcceptTerms = () => {
+type AcceptTermsProps = {
+  text: string;
+  dist: Distination;
+};
+
+const AcceptTerms = ({ text, dist }: AcceptTermsProps) => {
   return (
     <div className="flex items-center gap-x-[11px]">
       <input
@@ -13,7 +19,7 @@ const AcceptTerms = () => {
         htmlFor="checkboxTerms"
         className="text-sm text-switcher_color font-normal"
       >
-        I Accept the <LinkSwitcher to="/" text="Terms" />
+        {text} <LinkSwitcher to={dist.to} text={dist.text} />
       </label>
     </div>
   );

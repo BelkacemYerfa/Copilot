@@ -7,8 +7,13 @@ import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import SignBtn from "../shared/btns/SignBtn";
 import AcceptTerms from "../shared/Input/AcceptTerms";
+import { Distination } from "../../interfaces&types/Distination";
 
 const SignUp = () => {
+  const dist: Distination = {
+    text: "Terms",
+    to: "/auth",
+  };
   return (
     <section className="text-center space-y-7 ">
       <div className="space-y-2">
@@ -27,13 +32,13 @@ const SignUp = () => {
           <Input placeholderType="Repeat Password" placeholderCase="password" />
         </div>
         <div className="flex justify-start w-full">
-          <AcceptTerms />
+          <AcceptTerms text="I Accept the " dist={dist} />
         </div>
       </form>
-      <SignBtn text="Sign In" />
+      <SignBtn text="Sign Up" />
       <div className="flex justify-center gap-x-1">
         <Text text="Already have an Account?" />
-        <LinkSwitcher to="/auth" text="Sign Ip" />
+        <LinkSwitcher to="/auth" text="Sign Up" />
       </div>
     </section>
   );
