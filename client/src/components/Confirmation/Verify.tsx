@@ -8,7 +8,7 @@ type VerifyProps = {
   text?: string;
 };
 
-const Verify = ({ text = "74635" }: VerifyProps) => {
+const Verify = ({ text = "746535" }: VerifyProps) => {
   return (
     <section className="text-center space-y-7">
       <div className="space-y-2"></div>
