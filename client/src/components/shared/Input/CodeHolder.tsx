@@ -14,11 +14,11 @@ interface NewCode {
 
 const CodeHolder = ({ code }: CodeHolder) => {
   const [newCode, setNewCode] = useState<UserCode>([]);
-  console.log(newCode);
+
   return (
     <div className="flex items-center gap-x-2">
       {code.map((item, index) => (
-        <Input key={index} newCode={newCode} codeChange={setNewCode} />
+        <Input key={index + item} newCode={newCode} codeChange={setNewCode} />
       ))}
     </div>
   );
@@ -28,7 +28,6 @@ const Input = ({ newCode, codeChange }: NewCode) => {
   const Pass_To_Next_Element = debounce((e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
     const next = target.nextElementSibling as HTMLInputElement;
-
     if (target.value.length > 1) {
       target.value = target.value[0];
       codeChange([...newCode, target.value]);
