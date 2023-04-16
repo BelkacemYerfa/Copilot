@@ -4,14 +4,24 @@ import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import Text from "../shared/Text/Text";
 import SignBtn from "../shared/btns/SignBtn";
+import { motion } from "framer-motion";
 
-const NewPassword = () => {
+interface NewPasswordProps {
+  direction: string;
+}
+
+const NewPassword = ({ direction }: NewPasswordProps) => {
   const dist: Distination = {
     text: "Terms & Conditions",
     to: "/auth",
   };
   return (
-    <section className="text-center space-y-7">
+    <motion.section
+      initial={{ x: direction === "right" ? "60%" : "-60%" }}
+      animate={{ x: 0 }}
+      exit={{ x: direction === "right" ? "-150%" : "150%" }}
+      className="text-center space-y-7"
+    >
       <div>
         <h2 className="text-2xl/9 text-main_color font-semibold">
           Setup New Password
@@ -27,7 +37,7 @@ const NewPassword = () => {
       </form>
       <AcceptTerms text="I Agree & " dist={dist} />
       <SignBtn text="Submit" />
-    </section>
+    </motion.section>
   );
 };
 
