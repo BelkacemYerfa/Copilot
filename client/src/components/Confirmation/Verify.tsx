@@ -8,15 +8,14 @@ import MobileSvg from "../shared/animatedSvgs/MobileSvg";
 
 type VerifyProps = {
   text?: string;
-  direction: string;
 };
 
-const Verify = ({ text = "746535", direction }: VerifyProps) => {
+const Verify = ({ text = "746535" }: VerifyProps) => {
   return (
     <motion.section
-      initial={{ x: direction === "right" ? "60%" : "-60%" }}
+      initial={{ x: "60%" }}
       animate={{ x: 0 }}
-      exit={{ x: direction === "right" ? "-150%" : "150%" }}
+      exit={{ x: "-60%" }}
       className="text-center space-y-7"
     >
       <MobileSvg />

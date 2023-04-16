@@ -6,20 +6,16 @@ import Text from "../shared/Text/Text";
 import SignBtn from "../shared/btns/SignBtn";
 import { motion } from "framer-motion";
 
-interface NewPasswordProps {
-  direction: string;
-}
-
-const NewPassword = ({ direction }: NewPasswordProps) => {
+const NewPassword = () => {
   const dist: Distination = {
     text: "Terms & Conditions",
     to: "/auth",
   };
   return (
     <motion.section
-      initial={{ x: direction === "right" ? "60%" : "-60%" }}
+      initial={{ x: "60%" }}
       animate={{ x: 0 }}
-      exit={{ x: direction === "right" ? "-150%" : "150%" }}
+      exit={{ x: "-60%" }}
       className="text-center space-y-7"
     >
       <div>

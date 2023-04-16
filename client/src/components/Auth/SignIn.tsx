@@ -9,17 +9,12 @@ import SignBtn from "../shared/btns/SignBtn";
 import { SignProps } from "../../interfaces&types/Distination";
 import { motion } from "framer-motion";
 
-interface SignInProps extends SignProps {
-  onChange: () => void;
-  direction: string;
-}
-
-export const SignIn = ({ isVisable, onChange, direction }: SignInProps) => {
+export const SignIn = ({ isVisable }: SignProps) => {
   return (
     <motion.section
-      initial={{ x: direction === "right" ? "60%" : "-60%" }}
+      initial={{ x: "60%" }}
       animate={{ x: 0 }}
-      exit={{ x: direction === "right" ? "-150%" : "150%" }}
+      exit={{ x: "-60%" }}
       className="text-center space-y-7 "
     >
       <div className="space-y-2">
@@ -40,11 +35,7 @@ export const SignIn = ({ isVisable, onChange, direction }: SignInProps) => {
           <Input placeholderType="Password" />
         </div>
         <div className="flex justify-end w-full">
-          <LinkSwitcher
-            to="/auth"
-            text="forgot password?"
-            onChange={onChange}
-          />
+          <LinkSwitcher to="/auth" text="forgot password?" />
         </div>
       </form>
       <SignBtn text="Sign In" />

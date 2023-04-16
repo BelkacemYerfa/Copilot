@@ -4,22 +4,13 @@ type LinkSwitcherProps = {
   to: string;
   text: string;
   onClick?: () => void;
-  onChange?: () => void;
 };
 
-const LinkSwitcher = ({ to, text, onClick, onChange }: LinkSwitcherProps) => {
-  const handleClick = () => {
-    if (onChange) {
-      return onChange;
-    }
-    if (onClick) {
-      return onClick;
-    }
-  };
+const LinkSwitcher = ({ to, text, onClick }: LinkSwitcherProps) => {
   return (
     <Link
       to={to}
-      onClick={handleClick}
+      onClick={onClick}
       className="text-sm text-links_color capitalize font-normal"
     >
       {text}
