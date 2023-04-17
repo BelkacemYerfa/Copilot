@@ -28,8 +28,8 @@ const NewPassword = () => {
         </div>
       </div>
       <form action="" className="flex flex-col gap-y-5">
-        <Input placeholderType="Password" checkLenght={true} />
-        <Input placeholderType="Repeat Password" />
+        {/*   <Input placeholderType="Password" checkLenght={true} />
+        <Input placeholderType="Repeat Password" /> */}
       </form>
       <AcceptTerms text="I Agree & " dist={dist} />
       <SignBtn text="Submit" />

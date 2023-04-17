@@ -3,12 +3,14 @@ type InputProps = {
   placeholderCase?: string;
   checkLenght?: boolean;
   DataHolder?: string;
+  RegisterInput: any;
 };
 
 const Input = ({
   placeholderType,
   placeholderCase,
   checkLenght = false,
+  RegisterInput,
   DataHolder,
 }: InputProps) => {
   return checkLenght ? (
@@ -17,6 +19,7 @@ const Input = ({
         <input
           type={placeholderType.toLowerCase() || placeholderCase}
           placeholder={placeholderType}
+          {...RegisterInput(`${placeholderType.toLowerCase()}`)}
           className="border border-solid border-btn_border_color rounded-lg p-main_input_padding w-full outline-none placeholder:text-placeholder_color"
         />
         <div className="flex items-center gap-x-2">
@@ -36,6 +39,13 @@ const Input = ({
     <input
       type={placeholderType.toLowerCase() || placeholderCase}
       placeholder={placeholderType}
+      {...RegisterInput(
+        `${
+          placeholderCase
+            ? placeholderCase.trim()
+            : placeholderType.toLowerCase()
+        }`
+      )}
       className="border border-solid border-btn_border_color rounded-lg p-main_input_padding w-full outline-none placeholder:text-placeholder_color"
     />
   );

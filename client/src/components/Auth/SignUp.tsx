@@ -9,47 +9,69 @@ import SignBtn from "../shared/btns/SignBtn";
 import AcceptTerms from "../shared/Input/AcceptTerms";
 import { Distination, SignProps } from "../../interfaces&types/Distination";
 import { motion } from "framer-motion";
+import { UserSchemaRegister } from "../../validation/auth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
 const SignUp = ({ isVisable }: SignProps) => {
   const dist: Distination = {
     text: "Terms",
     to: "/auth",
   };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormSchema>({
+    resolver: zodResolver(UserSchemaRegister),
+  });
+  const submiter: SubmitHandler<UserFormSchema> = (data) => {
+    console.log(data);
+  };
   return (
-    <motion.section
-      initial={{ x: "60%" }}
-      animate={{ x: 0 }}
-      exit={{ x: "-60%" }}
+    <motion.form
+      onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 20, opacity: 0 }}
       className="text-center space-y-7 "
     >
       <div className="space-y-2">
         <h2 className="text-2xl/9 text-main_color font-semibold">Sing Up</h2>
         <Text text="Copilot" />
       </div>
-      <form
-        action=""
-        className="flex flex-col sm:flex-row gap-y-2 items-center gap-x-4"
-      >
+      <div className="flex flex-col sm:flex-row gap-y-2 items-center gap-x-4">
         <MainBtn text="Sign in with Google" Icon={google} />
         <MainBtn text="Sign in with Apple" Icon={apple} />
-      </form>
+      </div>
       <Swicher />
-      <form action="" className="flex flex-col gap-y-5">
+      <div className="flex flex-col gap-y-5">
         <div className="flex flex-col gap-y-4">
-          <Input placeholderType="Email" />
-          <Input placeholderType="Password" checkLenght={true} />
-          <Input placeholderType="Repeat Password" placeholderCase="password" />
+          <Input placeholderType="Email" RegisterInput={register} />
+          <Input
+            placeholderType="Password"
+            checkLenght={true}
+            RegisterInput={register}
+          />
+          <Input
+            placeholderType="Password"
+            placeholderCase="Repeat Password"
+            RegisterInput={register}
+          />
         </div>
         <div className="flex justify-start w-full">
           <AcceptTerms text="I Accept the " dist={dist} />
         </div>
-      </form>
+      </div>
       <SignBtn text="Sign Up" />
       <div className="flex justify-center gap-x-1">
         <Text text="Already have an Account?" />
         <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
       </div>
-    </motion.section>
+    </motion.form>
   );
 };
 
