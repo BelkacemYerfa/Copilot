@@ -1,20 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
-import { PrivateRoute } from "./private/PrivateRoute";
-import { Auth } from "./pages/Auth";
 import { Suspense } from "react";
-import { AnimatePresence } from "framer-motion";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AnimatedRoutes from "./components/animated/AnimatedRoutes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
+  const client = new QueryClient();
+
   return (
-    <div className="font-Inter">
-      <Router>
-        <Suspense fallback={<div>loading...</div>}>
-          <AnimatedRoutes />
-        </Suspense>
-      </Router>
-    </div>
+    <QueryClientProvider client={client}>
+      <div className="font-Inter">
+        <Router>
+          <Suspense fallback={<div>loading...</div>}>
+            <AnimatedRoutes />
+          </Suspense>
+        </Router>
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   );
 }
 
