@@ -15,10 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import { User } from "../../interfaces&types/User";
+import { ChangeEventHandler, useState } from "react";
+import TextError from "../shared/Text/TextError";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
 const SignUp = ({ isVisable }: SignProps) => {
+  const [check, setCheck] = useState<boolean>(true);
   const dist: Distination = {
     text: "Terms",
     to: "/auth",
@@ -28,9 +31,13 @@ const SignUp = ({ isVisable }: SignProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormSchema>({
+    mode: "onChange",
     resolver: zodResolver(UserSchemaRegister),
   });
   const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
+    if (userInfo) {
+      setCheck(!check);
+    }
     const result = await axios.post<User>(
       "http://localhost:5000/api/v1/auth/register",
       userInfo
@@ -56,23 +63,36 @@ const SignUp = ({ isVisable }: SignProps) => {
       <Swicher />
       <div className="flex flex-col gap-y-5">
         <div className="flex flex-col gap-y-4">
-          <Input placeholderType="Email" RegisterInput={register} />
-          <Input
-            placeholderType="Password"
-            checkLenght={true}
-            RegisterInput={register}
-          />
-          <Input
-            placeholderType="Password"
-            placeholderCase="Repeat Password"
-            RegisterInput={register}
-          />
+          <div>
+            <Input placeholderType="Email" RegisterInput={register} />
+            {errors.email ? <TextError error={errors.email.message} /> : null}
+          </div>
+          <div>
+            <Input
+              placeholderType="Password"
+              checkLenght={true}
+              RegisterInput={register}
+            />
+            {errors.password ? (
+              <TextError error={errors.password.message} />
+            ) : null}
+          </div>
+          <div>
+            <Input
+              placeholderType="Password"
+              placeholderCase="Repeat Password"
+              RegisterInput={register}
+            />
+            {errors.RepeatPassword ? (
+              <TextError error={errors.RepeatPassword.message} />
+            ) : null}
+          </div>
         </div>
         <div className="flex justify-start w-full">
           <AcceptTerms text="I Accept the " dist={dist} />
         </div>
       </div>
-      <SignBtn text="Sign Up" />
+      <SignBtn text="Sign Up" disable={check} />
       <div className="flex justify-center gap-x-1">
         <Text text="Already have an Account?" />
         <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
