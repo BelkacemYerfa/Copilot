@@ -13,8 +13,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useAxios from "../../hooks/useAxios";
+import axios from "axios";
+import { User } from "../../interfaces&types/User";
 
-type UserFormSchema = z.infer<typeof UserSchemaLogin>;
+export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
 export const SignIn = ({ isVisable }: SignProps) => {
   const {
@@ -24,8 +27,26 @@ export const SignIn = ({ isVisable }: SignProps) => {
   } = useForm<UserFormSchema>({
     resolver: zodResolver(UserSchemaLogin),
   });
-  const submiter: SubmitHandler<UserFormSchema> = (data) => {
-    console.log(data);
+  const submiter: SubmitHandler<UserFormSchema> = async (
+    userInfo: UserFormSchema
+  ) => {
+    //quick note this is not valid cause you can(t call a hook inside of function)
+    /* const { data, isLoading } = useAxios({
+      queryKey: "userInfo",
+      fetchFunc: async (): Promise<User> => {
+        const result = await axios.post<User>(
+          "http://localhost:5000/api/v1/auth/login",
+          userInfo
+        );
+        return result.data;
+      },
+    }); */
+
+    const result = await axios.post<User>(
+      "http://localhost:5000/api/v1/auth/login",
+      userInfo
+    );
+    console.log(result.data);
   };
   return (
     <motion.form

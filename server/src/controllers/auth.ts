@@ -7,7 +7,7 @@ export const Register = async (req: express.Request, res: express.Response) => {
   try {
     const { name, email, password } = req.body;
     if (!email || !password || !name) {
-      return res.status(500).json({ msg: "provid data" });
+      return res.status(500).json({ msg: "please provide your credentails" });
     }
     const ExistingUser = await getUser(email);
     if (ExistingUser) {
@@ -52,7 +52,7 @@ export const Login = async (req: express.Request, res: express.Response) => {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({
-        msg: "this already an existing account with this mail",
+        msg: "please provide your credentails",
       });
     }
     const check_User = await getUser(email);

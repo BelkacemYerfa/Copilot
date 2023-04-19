@@ -2,10 +2,18 @@ import { lazy, useState } from "react";
 import { SignIn } from "../components/Auth/SignIn";
 import NewPassword from "../components/Confirmation/NewPassword";
 import Verify from "../components/Confirmation/Verify";
-import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import Wrapper from "../components/wrapper/AnimateWrapper";
 import PageWrapper from "../components/wrapper/PageWrapper";
+import useAxios from "../hooks/useAxios";
+import { authFunct } from "../fetchFunctions/auth";
 const SignUp = lazy(() => import("../components/Auth/SignUp"));
+
+type Post = {
+  id: number;
+  title: string;
+  body: string;
+};
 
 export const Auth = (): JSX.Element => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
@@ -15,14 +23,16 @@ export const Auth = (): JSX.Element => {
     <Verify />,
     <NewPassword />,
   ];
-  const { data } = useQuery({
-    queryKey: ["data"],
-    queryFn: () =>
-      fetch("https://api.github.com/repos/tannerlinsley/react-query").then(
-        (res) => res.json()
-      ),
-  });
-  console.log(data);
+  const fetchData = async () => {
+    const result = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await result.json();
+    return data;
+  };
+  const { data, isLoading } = useAxios<Post[]>({
+    queryKey: "data",
+    fetchFunc: fetchData,
+  }); /* 
+  console.log(data); */
   return (
     <PageWrapper checked={true}>
       {isSignIn ? (

@@ -42,7 +42,7 @@ const Input = ({
       {...RegisterInput(
         `${
           placeholderCase
-            ? placeholderCase.trim()
+            ? placeholderCase.split(" ").join("")
             : placeholderType.toLowerCase()
         }`
       )}

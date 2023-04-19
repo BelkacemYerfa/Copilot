@@ -3,11 +3,12 @@ import { z } from "zod";
 export const UserSchemaRegister = z
   .object({
     email: z.string().email().nonempty().trim(),
-    password: z.string().min(8).optional(),
-    RepeatPassword: z.string().min(8).optional(),
+    password: z.string().min(8).nonempty(),
+    RepeatPassword: z.string().min(8).nonempty(),
+    name: z.string().default(`user${Math.floor(Math.random() * 10000)}`),
   })
   .refine(({ password, RepeatPassword }) => {
-    if (password !== RepeatPassword) {
+    if (password === RepeatPassword) {
       return {
         message: "Password and confirm password must be the same",
       };

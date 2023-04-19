@@ -13,6 +13,8 @@ import { UserSchemaRegister } from "../../validation/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import axios from "axios";
+import { User } from "../../interfaces&types/User";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
@@ -28,8 +30,12 @@ const SignUp = ({ isVisable }: SignProps) => {
   } = useForm<UserFormSchema>({
     resolver: zodResolver(UserSchemaRegister),
   });
-  const submiter: SubmitHandler<UserFormSchema> = (data) => {
-    console.log(data);
+  const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
+    const result = await axios.post<User>(
+      "http://localhost:5000/api/v1/auth/register",
+      userInfo
+    );
+    console.log(result.data);
   };
   return (
     <motion.form
