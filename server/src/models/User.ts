@@ -1,4 +1,4 @@
-import { Date, Schema, model } from "mongoose";
+import { Date, Schema, Types, model } from "mongoose";
 
 interface userDocement {
   name: string;
@@ -8,6 +8,7 @@ interface userDocement {
   createdAt?: Date;
   updatedAt?: Date;
   sessionToken: string;
+  rooms?: Types.ObjectId[];
 }
 
 export const User = new Schema<userDocement>({
@@ -40,6 +41,12 @@ export const User = new Schema<userDocement>({
     type: String,
     select: false,
   },
+  rooms: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "rooms",
+    },
+  ],
 });
 
 export const UserModel = model("users", User, "users");

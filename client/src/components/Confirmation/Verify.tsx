@@ -30,7 +30,7 @@ const Verify = ({ text = "746535" }: VerifyProps) => {
         </p>
         <CodeHolder code={text.split("")} />
       </div>
-      <SignBtn text="Submit" />
+      <SignBtn text="Submit" disable={false} />
       <div className="flex justify-center gap-x-1">
         <Text text="Didn't get the code" />
         <LinkSwitcher to="/" text="Resend" />

@@ -30,6 +30,7 @@ export const Register = async (req: Request, res: Response) => {
     const curentUser = {
       name: RegisterUser.name,
       email: email,
+      sessoionToken: RegisterUser.sessionToken,
     };
     res.cookie("copilote_auth ", RegisterUser.sessionToken, {
       domain: "localhost",
@@ -93,7 +94,20 @@ export const Login = async (req: Request, res: Response) => {
 export const CreateNewPassword = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    if (!email || password) {
+    const { authorization } = req.headers;
+    const token = authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        msg: "you are not authorized to access this route",
+      });
+    }
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!decoded) {
+      return res.status(401).json({
+        msg: "you are not authorized to access this route",
+      });
+    }
+    if (!email || !password) {
       return res.status(400).json({
         msg: "please provide your credentails",
       });
@@ -104,12 +118,24 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
         msg: "user not found , please check your credentails",
       });
     }
-    await updateUser(email, check_User._id.toString(), password);
+    const salt = await bcrypt.genSalt(12);
+    const hash_Password = await bcrypt.hash(password, salt);
+    await updateUser(email, check_User._id.toString(), {
+      name: check_User.name,
+      email: email,
+      password: hash_Password,
+      sessionToken: check_User.sessionToken,
+    });
     const new_user = await getUser(email);
+    const currentUser = {
+      email: new_user.email,
+      name: new_user.name,
+      profilePic: new_user.profilePicture,
+    };
     res.status(201).json({
       sucsses: true,
       msg: "user password updated succesfully",
-      user: new_user,
+      user: currentUser,
     });
   } catch (error) {
     return res.status(500).json({
