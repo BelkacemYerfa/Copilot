@@ -3,6 +3,7 @@ import Mailgen from "mailgen";
 import { Request, Response } from "express";
 import { getUser } from "../models/User";
 import { mailConfig } from "../interfaces/mailConfig";
+import { VerifyMailContent } from "../static/VerfiyMailContent";
 
 export const VerfiyMail = async (req: Request, res: Response) => {
   try {
@@ -29,23 +30,9 @@ export const VerfiyMail = async (req: Request, res: Response) => {
         link: "https://mailgen.js/",
       },
     });
-    let mailContent = {
-      body: {
-        name: checkUser.name,
-        intro: "Code Verification",
-        table: {
-          data: [
-            {
-              item: "The Code Digits",
-              description: "Your code digits to verify that is your account",
-              price: verfiyNumber,
-            },
-          ],
-        },
-        outro: "Looking forward to do more buisness",
-      },
-    };
-    let mail = MailGenerator.generate(mailContent);
+    let mail = MailGenerator.generate(
+      VerifyMailContent({ name: checkUser.name, verfiyCode: verfiyNumber })
+    );
     let message = {
       from: process.env.USER_MAIL,
       to: checkUser.email,
@@ -57,9 +44,6 @@ export const VerfiyMail = async (req: Request, res: Response) => {
         msg: "email recieved sucssesfully",
       });
     });
-    /* res.status(201).json({
-      msg: "eamil is valid",
-    }); */
   } catch (error) {
     return res.status(500).json({
       msg: error,

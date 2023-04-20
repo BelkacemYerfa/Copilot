@@ -1,9 +1,9 @@
-import express from "express";
+import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import { createUser, getUser } from "../models/User";
+import { createUser, getUser, updateUser } from "../models/User";
 
-export const Register = async (req: express.Request, res: express.Response) => {
+export const Register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     if (!email || !password || !name) {
@@ -47,7 +47,7 @@ export const Register = async (req: express.Request, res: express.Response) => {
   }
 };
 
-export const Login = async (req: express.Request, res: express.Response) => {
+export const Login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -87,5 +87,33 @@ export const Login = async (req: express.Request, res: express.Response) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const CreateNewPassword = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || password) {
+      return res.status(400).json({
+        msg: "please provide your credentails",
+      });
+    }
+    const check_User = await getUser(email);
+    if (!check_User) {
+      return res.status(404).json({
+        msg: "user not found , please check your credentails",
+      });
+    }
+    await updateUser(email, check_User._id.toString(), password);
+    const new_user = await getUser(email);
+    res.status(201).json({
+      sucsses: true,
+      msg: "user password updated succesfully",
+      user: new_user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: error,
+    });
   }
 };
