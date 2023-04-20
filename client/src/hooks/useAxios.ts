@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface QueryProp<T> {
   queryKey: string;

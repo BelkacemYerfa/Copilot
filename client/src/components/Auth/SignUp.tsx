@@ -13,14 +13,16 @@ import { UserSchemaRegister } from "../../validation/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from "axios";
-import { User } from "../../interfaces&types/User";
-import { ChangeEventHandler, useState } from "react";
+import { UserAuth } from "../../interfaces&types/User";
+import { useState } from "react";
 import TextError from "../shared/Text/TextError";
+import { useRegisterUser } from "../../hooks/useAuthUser";
+import { useNavigate } from "react-router-dom";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
 const SignUp = ({ isVisable }: SignProps) => {
+  const navigate = useNavigate();
   const [check, setCheck] = useState<boolean>(true);
   const dist: Distination = {
     text: "Terms",
@@ -34,16 +36,24 @@ const SignUp = ({ isVisable }: SignProps) => {
     mode: "onChange",
     resolver: zodResolver(UserSchemaRegister),
   });
+  const { mutate: registerUser, isLoading, isSuccess } = useRegisterUser();
   const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
-    if (userInfo) {
+    /*  if (userInfo) {
       setCheck(!check);
-    }
-    const result = await axios.post<User>(
-      "http://localhost:5000/api/v1/auth/register",
-      userInfo
-    );
-    console.log(result.data);
+    } */
+    const { email, password } = userInfo;
+    const userPostInfo: UserAuth = {
+      email,
+      password,
+    };
+    registerUser(userPostInfo, {
+      onSuccess: () => {
+        navigate("/");
+      },
+    });
   };
+  if (isLoading) return <h1>Loading...</h1>;
+
   return (
     <motion.form
       onSubmit={handleSubmit(submiter, (err) => console.log(err))}

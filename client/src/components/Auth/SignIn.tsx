@@ -13,15 +13,16 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAxios from "../../hooks/useAxios";
 import { useState } from "react";
-import axios from "axios";
-import { User } from "../../interfaces&types/User";
 import TextError from "../shared/Text/TextError";
+import { useLogUser } from "../../hooks/useAuthUser";
+import { UserAuth } from "../../interfaces&types/User";
+import { useNavigate } from "react-router-dom";
 
 export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
 export const SignIn = ({ isVisable }: SignProps) => {
+  const navigate = useNavigate();
   const [check, setCheck] = useState<boolean>(true);
   const {
     register,
@@ -30,27 +31,22 @@ export const SignIn = ({ isVisable }: SignProps) => {
   } = useForm<UserFormSchema>({
     resolver: zodResolver(UserSchemaLogin),
   });
+  const { mutate: logUser, isLoading, isSuccess } = useLogUser();
   const submiter: SubmitHandler<UserFormSchema> = async (
     userInfo: UserFormSchema
   ) => {
-    //quick note this is not valid cause you can(t call a hook inside of function)
-    /* const { data, isLoading } = useAxios({
-      queryKey: "userInfo",
-      fetchFunc: async (): Promise<User> => {
-        const result = await axios.post<User>(
-          "http://localhost:5000/api/v1/auth/login",
-          userInfo
-        );
-        return result.data;
+    const { email, password } = userInfo;
+    const userPostInfo: UserAuth = {
+      email,
+      password,
+    };
+    logUser(userPostInfo, {
+      onSuccess: () => {
+        navigate("/");
       },
-    }); */
-    if (userInfo) setCheck(true);
-    const result = await axios.post<User>(
-      "http://localhost:5000/api/v1/auth/login",
-      userInfo
-    );
-    console.log(result.data);
+    });
   };
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <motion.form

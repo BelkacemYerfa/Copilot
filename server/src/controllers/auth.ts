@@ -5,9 +5,9 @@ import { createUser, getUser, updateUser } from "../models/User";
 
 export const Register = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
-    if (!email || !password || !name) {
-      return res.status(500).json({ msg: "please provide your credentails" });
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: "please provide your credentails" });
     }
     const ExistingUser = await getUser(email);
     if (ExistingUser) {
@@ -21,14 +21,14 @@ export const Register = async (req: Request, res: Response) => {
       expiresIn: "7d",
     });
     const newUser = {
-      name: name,
+      name: email.split("@")[0],
       email: email,
       password: hash_Password,
       sessionToken: JWT,
     };
     const RegisterUser = await createUser(newUser);
     const curentUser = {
-      name: name,
+      name: RegisterUser.name,
       email: email,
     };
     res.cookie("copilote_auth ", RegisterUser.sessionToken, {
