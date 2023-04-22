@@ -24,7 +24,7 @@ export const Auth = (): JSX.Element => {
       isVisable={() => setIsSignIn(!isSignIn)}
       setCount={() => setCount((prev) => prev + 1)}
     />,
-    <Verify />,
+    <Verify setCount={() => setCount((prev) => prev + 1)} />,
     <NewPassword />,
   ];
   const fetchData = async () => {

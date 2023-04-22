@@ -1,7 +1,6 @@
 type InputProps = {
   placeholderType: string;
   placeholderCase?: string;
-  DataHolder?: string;
   RegisterInput: any;
 };
 
@@ -9,7 +8,6 @@ const Input = ({
   placeholderType,
   placeholderCase,
   RegisterInput,
-  DataHolder,
 }: InputProps) => {
   return (
     <input

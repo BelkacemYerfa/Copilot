@@ -8,9 +8,10 @@ import MobileSvg from "../shared/animatedSvgs/MobileSvg";
 
 type VerifyProps = {
   text?: string;
+  setCount: () => void;
 };
 
-const Verify = ({ text = "746535" }: VerifyProps) => {
+const Verify = ({ text = "746535", setCount }: VerifyProps) => {
   return (
     <motion.section
       initial={{ x: "60%" }}
@@ -28,7 +29,7 @@ const Verify = ({ text = "746535" }: VerifyProps) => {
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
         </p>
-        <CodeHolder code={text.split("")} />
+        <CodeHolder code={text.split("")} setCount={setCount} />
       </div>
       <SignBtn text="Submit" disable={false} />
       <div className="flex justify-center gap-x-1">
