@@ -1,4 +1,4 @@
-import { Distination } from "../../interfaces&types/Distination";
+import { Distination } from "../../interfaces&types&static/Distination";
 import AcceptTerms from "../shared/Input/AcceptTerms";
 import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";

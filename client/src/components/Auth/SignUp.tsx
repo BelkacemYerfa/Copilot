@@ -7,23 +7,30 @@ import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import SignBtn from "../shared/btns/SignBtn";
 import AcceptTerms from "../shared/Input/AcceptTerms";
-import { Distination, SignProps } from "../../interfaces&types/Distination";
+import {
+  Distination,
+  SignProps,
+} from "../../interfaces&types&static/Distination";
 import { motion } from "framer-motion";
 import { UserSchemaRegister } from "../../validation/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { UserAuth } from "../../interfaces&types/User";
-import { useState } from "react";
+import { UserAuth } from "../../interfaces&types&static/User";
+import { useState, useEffect } from "react";
 import TextError from "../shared/Text/TextError";
 import { useRegisterUser } from "../../hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
+import { expression } from "../../interfaces&types&static/regExEmail";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
 const SignUp = ({ isVisable }: SignProps) => {
   const navigate = useNavigate();
-  const [check, setCheck] = useState<boolean>(true);
+  const [emailValidation, setEmailValidation] = useState<boolean>(false);
+  const [passwordValidation, setPasswordValidation] = useState<boolean>(false);
+  const [confirmPasswordValidation, setConfirmPasswordValidation] =
+    useState<boolean>(false);
   const dist: Distination = {
     text: "Terms",
     to: "/auth",
@@ -32,15 +39,13 @@ const SignUp = ({ isVisable }: SignProps) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<UserFormSchema>({
     mode: "onChange",
     resolver: zodResolver(UserSchemaRegister),
   });
-  const { mutate: registerUser, isLoading, isSuccess } = useRegisterUser();
+  const { mutate: registerUser, isLoading } = useRegisterUser();
   const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
-    /*  if (userInfo) {
-      setCheck(!check);
-    } */
     const { email, password } = userInfo;
     const userPostInfo: UserAuth = {
       email,
@@ -52,6 +57,26 @@ const SignUp = ({ isVisable }: SignProps) => {
       },
     });
   };
+
+  useEffect(() => {
+    const subscribe = watch((value) => {
+      if (expression.test(value.email ? value.email : ""))
+        setEmailValidation(true);
+      else setEmailValidation(false);
+      if (value.password?.length ? value.password.length >= 8 : "".length >= 8)
+        setPasswordValidation(true);
+      else setPasswordValidation(false);
+      if (
+        value.RepeatPassword?.length
+          ? value.RepeatPassword.length >= 8
+          : "".length >= 8
+      )
+        setConfirmPasswordValidation(true);
+      else setConfirmPasswordValidation(false);
+    });
+    return () => subscribe.unsubscribe();
+  });
+
   if (isLoading) return <h1>Loading...</h1>;
 
   return (
@@ -78,11 +103,7 @@ const SignUp = ({ isVisable }: SignProps) => {
             {errors.email ? <TextError error={errors.email.message} /> : null}
           </div>
           <div>
-            <Input
-              placeholderType="Password"
-              checkLenght={true}
-              RegisterInput={register}
-            />
+            <Input placeholderType="Password" RegisterInput={register} />
             {errors.password ? (
               <TextError error={errors.password.message} />
             ) : null}
@@ -102,7 +123,12 @@ const SignUp = ({ isVisable }: SignProps) => {
           <AcceptTerms text="I Accept the " dist={dist} />
         </div>
       </div>
-      <SignBtn text="Sign Up" disable={check} />
+      <SignBtn
+        text="Sign Up"
+        disable={
+          !emailValidation || !passwordValidation || !confirmPasswordValidation
+        }
+      />
       <div className="flex justify-center gap-x-1">
         <Text text="Already have an Account?" />
         <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />

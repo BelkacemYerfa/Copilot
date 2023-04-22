@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import jsonwebtoken from "jsonwebtoken";
 import { Configuration, OpenAIApi } from "openai";
 import { createRoom } from "../models/Room";
 

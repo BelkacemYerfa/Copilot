@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { UserAuth } from "../interfaces&types/User";
+import { UserAuth } from "../interfaces&types&static/User";
 import axios from "axios";
 
 const registerUser = (user: UserAuth) => {

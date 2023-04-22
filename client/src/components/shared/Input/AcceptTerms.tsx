@@ -1,5 +1,5 @@
 import LinkSwitcher from "../Link/LinkSwitcher";
-import { Distination } from "../../../interfaces&types/Distination";
+import { Distination } from "../../../interfaces&types&static/Distination";
 
 type AcceptTermsProps = {
   text: string;

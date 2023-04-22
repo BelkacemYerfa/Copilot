@@ -14,7 +14,7 @@ export const VerifyMailContent = ({ name, verfiyCode }: UserMailToSend) => {
         button: {
           color: "#22BC66",
           text: verfiyCode.toString(),
-          link: "",
+          link: "http://localhost:5173/",
         },
       },
       outro:

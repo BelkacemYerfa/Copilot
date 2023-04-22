@@ -14,7 +14,7 @@ export const VerfiyMail = async (req: Request, res: Response) => {
         msg: "User not Found , please check you credentails",
       });
     }
-    const verfiyNumber = Math.floor(Math.random() * 100000);
+    const verfiyNumber = Math.floor(Math.random() * 1000000);
     const config: mailConfig = {
       service: "gmail",
       auth: {

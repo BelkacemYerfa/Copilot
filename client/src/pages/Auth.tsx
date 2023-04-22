@@ -17,9 +17,13 @@ type Post = {
 
 export const Auth = (): JSX.Element => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
+  const [count, setCount] = useState<number>(0);
 
   const displayElm: JSX.Element[] = [
-    <SignIn isVisable={() => setIsSignIn(!isSignIn)} />,
+    <SignIn
+      isVisable={() => setIsSignIn(!isSignIn)}
+      setCount={() => setCount((prev) => prev + 1)}
+    />,
     <Verify />,
     <NewPassword />,
   ];
@@ -36,9 +40,7 @@ export const Auth = (): JSX.Element => {
   return (
     <PageWrapper checked={true}>
       {isSignIn ? (
-        <Wrapper>
-          <SignIn isVisable={() => setIsSignIn(!isSignIn)} />
-        </Wrapper>
+        <Wrapper>{displayElm[count]}</Wrapper>
       ) : (
         <SignUp isVisable={() => setIsSignIn(!isSignIn)} />
       )}
