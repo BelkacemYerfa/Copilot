@@ -1,66 +1,65 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
-import debounce from "lodash.debounce";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 
 type CodeHolder = {
   code: string[];
-  setCount: () => void;
-};
-
-type UserCode = string[];
-
-interface NewCode {
-  newCode: string[];
   codeChange: (newCode: string[]) => void;
-}
-
-const CodeHolder = ({ code, setCount }: CodeHolder) => {
-  const [newCode, setNewCode] = useState<UserCode>([]);
-  if (code === newCode) {
-    //here make the state of the new password updates to display the new content
-  }
-
-  return (
-    <div className="flex items-center justify-center gap-2 flex-wrap  ">
-      {code.map((item) => (
-        <Input
-          key={crypto.randomUUID() + item}
-          newCode={newCode}
-          codeChange={setNewCode}
-        />
-      ))}
-    </div>
-  );
 };
 
-const Input = ({ newCode, codeChange }: NewCode) => {
-  const Pass_To_Next_Element = (e: KeyboardEvent<HTMLInputElement>) => {
+const CodeHolder = ({ code, codeChange }: CodeHolder) => {
+  const [newCode, setNewCode] = useState<string[]>([]);
+  const Pass_To_Next_Element = (e: ChangeEvent, index: number) => {
+    const target = e.target as HTMLInputElement;
+    const next = target.nextElementSibling as HTMLInputElement;
+    if (target.value.length > 1)
+      target.value = target.value[target.value.length - 1];
+    if (next !== null) next.focus();
+    if (newCode.length < 6) {
+      newCode[index] = target.value;
+      setNewCode(newCode);
+      console.log(newCode);
+    }
+  };
+  const Pass_To_Previous_Element = (
+    e: KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const target = e.target as HTMLInputElement;
     const next = target.nextElementSibling as HTMLInputElement;
     const previous = target.previousElementSibling as HTMLInputElement;
-    if (target.value.length > 1) target.value = target.value[0];
-    if (next !== null) next.focus();
-    newCode[newCode.length] = target.value;
-    if (e.key === "Backspace") {
-      newCode = newCode.filter(function (item) {
-        return item !== newCode.pop();
-      });
-      previous.focus();
-      previous.value = "";
-    }
-    if (e.key === "leftArrow") next.focus();
-    if (e.key === "rightArrow") previous.focus();
-  };
+    if (target.value.length > 1)
+      target.value = target.value[target.value.length - 1];
 
+    if (newCode.length < 6) {
+      newCode[index] = target.value;
+      setNewCode(newCode);
+      next.focus();
+      console.log(newCode);
+    }
+    if (e.key === "Backspace") {
+      const newVal = [...newCode];
+      newVal.splice(index, 1);
+      setNewCode(newVal);
+      previous.focus();
+      console.log(newCode);
+    }
+    if (e.key === "ArrowRight" && next) next.focus();
+    if (e.key === "ArrowLeft" && previous) previous.focus();
+  };
   return (
-    <input
-      type="number"
-      name="codeDegit"
-      min="0"
-      max={9}
-      maxLength={1}
-      onKeyUp={Pass_To_Next_Element}
-      className="border border-solid border-placeholder_color rounded-lg h-[58px] w-[58px] text-2xl/9 text-main_color text-center focus:outline-none focus:ring-0 focus:border-main_color"
-    />
+    <div className="flex items-center justify-center gap-2 flex-wrap">
+      {code.map((item, index) => (
+        <input
+          type="number"
+          name="codeDegit"
+          min="0"
+          max={9}
+          key={index}
+          onKeyUp={(event) => Pass_To_Previous_Element(event, index)}
+          className="border border-solid border-placeholder_color rounded-lg h-[58px] w-[58px] text-2xl/9 text-main_color text-center focus:outline-none focus:ring-0 focus:border-main_color"
+        />
+      ))}
+      <div></div>
+    </div>
   );
 };
 

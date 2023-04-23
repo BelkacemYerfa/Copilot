@@ -25,7 +25,7 @@ export const Auth = (): JSX.Element => {
       setCount={() => setCount((prev) => prev + 1)}
     />,
     <Verify setCount={() => setCount((prev) => prev + 1)} />,
-    <NewPassword />,
+    <NewPassword setCount={() => setIsSignIn(!isSignIn)} />,
   ];
   const fetchData = async () => {
     const result = await fetch("https://jsonplaceholder.typicode.com/posts");

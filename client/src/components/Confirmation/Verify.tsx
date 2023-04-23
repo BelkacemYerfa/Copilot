@@ -5,6 +5,7 @@ import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import CodeHolder from "../shared/Input/CodeHolder";
 import { motion } from "framer-motion";
 import MobileSvg from "../shared/animatedSvgs/MobileSvg";
+import { ChangeEvent, FormEventHandler, useState } from "react";
 
 type VerifyProps = {
   text?: string;
@@ -12,8 +13,18 @@ type VerifyProps = {
 };
 
 const Verify = ({ text = "746535", setCount }: VerifyProps) => {
+  const [newCode, setNewCode] = useState<string[]>([]);
   return (
-    <motion.section
+    <motion.form
+      onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const CheckNewCode = newCode.join("");
+        if (CheckNewCode === text) {
+          setCount();
+        } else {
+          /* console.log(CheckNewCode); */
+        }
+      }}
       initial={{ x: "60%" }}
       animate={{ x: 0 }}
       exit={{ x: "-60%" }}
@@ -29,14 +40,17 @@ const Verify = ({ text = "746535", setCount }: VerifyProps) => {
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
         </p>
-        <CodeHolder code={text.split("")} setCount={setCount} />
+        <CodeHolder
+          code={text.split("")}
+          codeChange={() => setNewCode(newCode)}
+        />
       </div>
       <SignBtn text="Submit" disable={false} />
       <div className="flex justify-center gap-x-1">
         <Text text="Didn't get the code" />
         <LinkSwitcher to="/" text="Resend" />
       </div>
-    </motion.section>
+    </motion.form>
   );
 };
 
