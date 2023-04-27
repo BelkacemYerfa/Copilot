@@ -14,11 +14,14 @@ type VerifyProps = {
 
 const Verify = ({ text = "746535", setCount }: VerifyProps) => {
   const [newCode, setNewCode] = useState<string[]>([]);
+
   return (
     <motion.form
       onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(newCode);
         const CheckNewCode = newCode.join("");
+        console.log(CheckNewCode);
         if (CheckNewCode === text) {
           setCount();
         } else {
@@ -40,11 +43,9 @@ const Verify = ({ text = "746535", setCount }: VerifyProps) => {
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
         </p>
-        <CodeHolder
-          code={text.split("")}
-          codeChange={() => setNewCode(newCode)}
-        />
+        <CodeHolder code={text.split("")} codeChange={() => setNewCode} />
       </div>
+
       <SignBtn text="Submit" disable={false} />
       <div className="flex justify-center gap-x-1">
         <Text text="Didn't get the code" />

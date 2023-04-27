@@ -7,22 +7,7 @@ type CodeHolder = {
 
 const CodeHolder = ({ code, codeChange }: CodeHolder) => {
   const [newCode, setNewCode] = useState<string[]>([]);
-  const Pass_To_Next_Element = (e: ChangeEvent, index: number) => {
-    const target = e.target as HTMLInputElement;
-    const next = target.nextElementSibling as HTMLInputElement;
-    if (target.value.length > 1)
-      target.value = target.value[target.value.length - 1];
-    if (next !== null) next.focus();
-    if (newCode.length < 6) {
-      newCode[index] = target.value;
-      setNewCode(newCode);
-      console.log(newCode);
-    }
-  };
-  const Pass_To_Previous_Element = (
-    e: KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const ClickHadler = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
     const target = e.target as HTMLInputElement;
     const next = target.nextElementSibling as HTMLInputElement;
     const previous = target.previousElementSibling as HTMLInputElement;
@@ -32,6 +17,7 @@ const CodeHolder = ({ code, codeChange }: CodeHolder) => {
     if (newCode.length < 6) {
       newCode[index] = target.value;
       setNewCode(newCode);
+      codeChange(newCode);
       next.focus();
       console.log(newCode);
     }
@@ -39,6 +25,7 @@ const CodeHolder = ({ code, codeChange }: CodeHolder) => {
       const newVal = [...newCode];
       newVal.splice(index, 1);
       setNewCode(newVal);
+      codeChange(newCode);
       previous.focus();
       console.log(newCode);
     }
@@ -54,7 +41,7 @@ const CodeHolder = ({ code, codeChange }: CodeHolder) => {
           min="0"
           max={9}
           key={index}
-          onKeyUp={(event) => Pass_To_Previous_Element(event, index)}
+          onKeyUp={(event) => ClickHadler(event, index)}
           className="border border-solid border-placeholder_color rounded-lg h-[58px] w-[58px] text-2xl/9 text-main_color text-center focus:outline-none focus:ring-0 focus:border-main_color"
         />
       ))}
