@@ -5,7 +5,7 @@ import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import CodeHolder from "../shared/Input/CodeHolder";
 import { motion } from "framer-motion";
 import MobileSvg from "../shared/animatedSvgs/MobileSvg";
-import { ChangeEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 type VerifyProps = {
   text?: string;
@@ -43,7 +43,7 @@ const Verify = ({ text = "746535", setCount }: VerifyProps) => {
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
         </p>
-        <CodeHolder code={text.split("")} codeChange={() => setNewCode} />
+        <CodeHolder code={text.split("")} codeChange={setNewCode} />
       </div>
 
       <SignBtn text="Submit" disable={false} />

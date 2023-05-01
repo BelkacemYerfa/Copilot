@@ -1,6 +1,5 @@
 import { Router } from "express";
-import registration from "./registration";
-import login from "./login";
+import { LogUser, LogoutUser, RegisterUser } from "./login";
 import verify from "./verify";
 import passwordUpdate from "./passwordUpdate";
 import gpt from "./gpt";
@@ -14,8 +13,9 @@ import {
 const router = Router();
 
 export default (): typeof router => {
-  registration(router);
-  login(router);
+  RegisterUser(router);
+  LogUser(router);
+  LogoutUser(router);
   verify(router);
   passwordUpdate(router);
   gpt(router);

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
 import { getUserBySessionToken } from "../models/User";
 
-export const isAuthunticated = async (
+export const isAuthenticated = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,13 +11,14 @@ export const isAuthunticated = async (
     const token = req.cookies.copilote_auth;
     if (!token) {
       return res.status(401).json({
-        msg: "you are not authunticated",
+        msg: "forbidden access",
       });
     }
     const existing_User = await getUserBySessionToken(token);
+    //check the code bellow
     if (!existing_User) {
-      return res.status(401).json({
-        msg: "you are not authorized, please login",
+      return res.status(403).json({
+        msg: "you are not authorized , please login",
       });
     }
     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
