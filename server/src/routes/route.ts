@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { LogUser, LogoutUser, RegisterUser } from "./login";
+import { LogUser, LogoutUser, RegisterUser } from "./auth";
 import verify from "./verify";
 import passwordUpdate from "./passwordUpdate";
 import gpt from "./gpt";

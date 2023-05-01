@@ -14,7 +14,7 @@ export const gptText = async (req: Request, res: Response) => {
 
     if (!prompt) {
       return res.status(400).json({
-        msg: "please provide your credentails",
+        msg: "please provide your prompt",
       });
     }
 
@@ -35,9 +35,9 @@ export const gptText = async (req: Request, res: Response) => {
       });
     }
     res.status(201).json({
-      suscces: true,
-      msg: "response is fetched sucssesfully ",
-      resposnse: response.data.choices[0].message,
+      success: true,
+      msg: "response is fetched successfully ",
+      response: response.data.choices[0].message,
     });
   } catch (error) {
     return res.status(500).json({

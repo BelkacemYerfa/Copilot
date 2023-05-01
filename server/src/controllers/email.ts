@@ -5,7 +5,7 @@ import { getUser } from "../models/User";
 import { mailConfig } from "../interfaces/mailConfig";
 import { VerifyMailContent } from "../static/VerfiyMailContent";
 
-export const VerfiyMail = async (req: Request, res: Response) => {
+export const VerifyMail = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
     const checkUser = await getUser(email);

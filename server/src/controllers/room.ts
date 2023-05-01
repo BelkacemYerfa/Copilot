@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {
   createRoom,
-  roomDocement,
+  roomDocument,
   getRoomById,
   deleteRoomById,
   getAllRooms,
@@ -10,14 +10,14 @@ import {
 export const createNewRoom = async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
-    const room: roomDocement = {
+    const room: roomDocument = {
       creator: userId,
       content: [],
     };
     const newRoom = await createRoom(room);
     const { _id, name } = newRoom;
     res.status(201).json({
-      suscces: true,
+      success: true,
       msg: "room is created sucssesfully",
       room: {
         id: _id,
@@ -36,7 +36,7 @@ export const getRoomContent = async (req: Request, res: Response) => {
     const { roomId } = req.body;
     if (!roomId) {
       return res.status(400).json({
-        msg: "pleae check your id",
+        msg: "please check your id",
       });
     }
     const room = await getRoomById(roomId);
@@ -47,8 +47,8 @@ export const getRoomContent = async (req: Request, res: Response) => {
     }
     const { _id, content } = room;
     res.status(201).json({
-      suscces: true,
-      msg: "room's data is fetched succsefully",
+      success: true,
+      msg: "room's data is fetched successfully",
       room: {
         id: _id,
         content: content,
@@ -66,7 +66,7 @@ export const deleteRoom = async (req: Request, res: Response) => {
     const { roomId } = req.params;
     if (!roomId) {
       return res.status(400).json({
-        msg: "pleae check your id",
+        msg: "please check your id",
       });
     }
     const room = await getRoomById(roomId);
@@ -77,8 +77,8 @@ export const deleteRoom = async (req: Request, res: Response) => {
     }
     await deleteRoomById(roomId);
     res.status(200).json({
-      suscces: true,
-      msg: "room is deleted succesfully",
+      success: true,
+      msg: "room is deleted successfully",
     });
   } catch (error) {
     return res.status(500).json({

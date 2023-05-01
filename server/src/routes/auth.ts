@@ -1,3 +1,4 @@
+import { isAuthenticated } from "middlewares/isAuthunticated";
 import { Login, Logout, Register } from "../controllers/auth";
 import { Router } from "express";
 
@@ -6,7 +7,7 @@ export const LogUser = (router: Router) => {
 };
 
 export const LogoutUser = (router: Router) => {
-  router.get("/auth/logout", Logout);
+  router.get("/auth/logout", isAuthenticated, Logout);
 };
 
 export const RegisterUser = (router: Router) => {
