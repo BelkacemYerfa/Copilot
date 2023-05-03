@@ -2,18 +2,17 @@ import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import { createUser, getUser, updateUser } from "../models/User";
+import { CustomError } from "errors/CustomError";
 
 export const Register = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ msg: "please provide your credentails" });
+      throw new CustomError("please provide values to all the fields", 400);
     }
     const ExistingUser = await getUser(email);
     if (ExistingUser) {
-      return res.status(400).json({
-        msg: "this already an existing account with this mail",
-      });
+      throw new CustomError("the user already exists", 400);
     }
     const salt = await bcrypt.genSalt(12);
     const hash_Password = await bcrypt.hash(password, salt);
@@ -27,7 +26,7 @@ export const Register = async (req: Request, res: Response) => {
       sessionToken: JWT,
     };
     const RegisterUser = await createUser(newUser);
-    const curentUser = {
+    const currentUser = {
       name: RegisterUser.name,
       email: email,
       sessoionToken: RegisterUser.sessionToken,
@@ -37,8 +36,8 @@ export const Register = async (req: Request, res: Response) => {
       path: "/",
     });
     return res.status(200).json({
-      sucsses: true,
-      user: curentUser,
+      success: true,
+      user: currentUser,
     });
   } catch (error) {
     console.log(error);
@@ -65,22 +64,18 @@ export const Login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({
-        msg: "please provide your credentails",
-      });
+      throw new CustomError("please provide values to all the fields", 400);
     }
     const check_User = await getUser(email);
     if (!check_User) {
-      return res.status(404).json({
-        msg: "sorry , user not found",
-      });
+      throw new CustomError("sorry , user is not found", 404);
     }
     const isMatch = await bcrypt.compare(password, check_User.password);
     if (!isMatch) {
-      return res.status(401).json({
-        sucsses: false,
-        msg: "password is incorect , please check your credentials",
-      });
+      throw new CustomError(
+        "you're not authorized , check your credentials",
+        401
+      );
     }
     const JWT = jsonwebtoken.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "7d",
@@ -96,7 +91,7 @@ export const Login = async (req: Request, res: Response) => {
       profilePic: check_User.profilePicture,
     };
     return res.status(200).json({
-      sucsses: true,
+      success: true,
       user: currentUser,
     });
   } catch (error) {
@@ -107,29 +102,12 @@ export const Login = async (req: Request, res: Response) => {
 export const CreateNewPassword = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const { authorization } = req.headers;
-    const token = authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({
-        msg: "you are not authorized to access this route",
-      });
-    }
-    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-    if (!decoded) {
-      return res.status(401).json({
-        msg: "you are not authorized to access this route",
-      });
-    }
     if (!email || !password) {
-      return res.status(400).json({
-        msg: "please provide your credentails",
-      });
+      throw new CustomError("please provide all the fields", 400);
     }
     const check_User = await getUser(email);
     if (!check_User) {
-      return res.status(404).json({
-        msg: "user not found , please check your credentails",
-      });
+      throw new CustomError("user is not found , check your credentials", 401);
     }
     const salt = await bcrypt.genSalt(12);
     const hash_Password = await bcrypt.hash(password, salt);
@@ -146,8 +124,8 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
       profilePic: new_user.profilePicture,
     };
     res.status(201).json({
-      sucsses: true,
-      msg: "user password updated succesfully",
+      success: true,
+      msg: "user password updated successfully",
       user: currentUser,
     });
   } catch (error) {

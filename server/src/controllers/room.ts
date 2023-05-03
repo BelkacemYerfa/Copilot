@@ -18,7 +18,7 @@ export const createNewRoom = async (req: Request, res: Response) => {
     const { _id, name } = newRoom;
     res.status(201).json({
       success: true,
-      msg: "room is created sucssesfully",
+      msg: "room is created successfully",
       room: {
         id: _id,
         name,

@@ -8,7 +8,7 @@ export const gptText = async (req: Request, res: Response) => {
       apiKey: process.env.API_KEY,
     });
 
-    const openai = new OpenAIApi(configuration);
+    const openAi = new OpenAIApi(configuration);
 
     const { prompt } = req.body;
 
@@ -18,7 +18,7 @@ export const gptText = async (req: Request, res: Response) => {
       });
     }
 
-    const response = await openai.createChatCompletion({
+    const response = await openAi.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
