@@ -1,40 +1,46 @@
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
-import { createUser, getUser, updateUser } from "../models/User";
-import { CustomError } from "errors/CustomError";
+import {
+  createJwtAuth,
+  createUser,
+  getUserByMail,
+  updateUser,
+} from "../models/User";
 
 export const Register = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      throw new CustomError("please provide values to all the fields", 400);
+      return res.status(400).json({
+        msg: "provide the fields",
+      });
     }
-    const ExistingUser = await getUser(email);
+    const ExistingUser = await getUserByMail(email);
     if (ExistingUser) {
-      throw new CustomError("the user already exists", 400);
+      return res.status(400).json({
+        msg: "an account is already associated with thi email",
+      });
     }
     const salt = await bcrypt.genSalt(12);
     const hash_Password = await bcrypt.hash(password, salt);
-    const JWT = jsonwebtoken.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
     const newUser = {
       name: email.split("@")[0],
       email: email,
       password: hash_Password,
-      sessionToken: JWT,
     };
     const RegisterUser = await createUser(newUser);
     const currentUser = {
       name: RegisterUser.name,
       email: email,
-      sessoionToken: RegisterUser.sessionToken,
     };
-    res.cookie("copilote_auth ", RegisterUser.sessionToken, {
-      domain: "localhost",
-      path: "/",
-    });
+    res.cookie(
+      "copilote_auth ",
+      await createJwtAuth(RegisterUser._id.toString()),
+      {
+        domain: "localhost",
+        path: "/",
+      }
+    );
     return res.status(200).json({
       success: true,
       user: currentUser,
@@ -64,27 +70,30 @@ export const Login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      throw new CustomError("please provide values to all the fields", 400);
+      return res.status(400).json({
+        msg: "provide the fields",
+      });
     }
-    const check_User = await getUser(email);
+    const check_User = await getUserByMail(email);
     if (!check_User) {
-      throw new CustomError("sorry , user is not found", 404);
+      return res.status(404).json({
+        msg: "their is not account associated with this email",
+      });
     }
     const isMatch = await bcrypt.compare(password, check_User.password);
     if (!isMatch) {
-      throw new CustomError(
-        "you're not authorized , check your credentials",
-        401
-      );
+      return res.status(401).json({
+        msg: "your are not authorized , check your credentials",
+      });
     }
-    const JWT = jsonwebtoken.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-    check_User.sessionToken = JWT;
-    res.cookie("copilote_auth ", check_User.sessionToken, {
-      domain: "localhost",
-      path: "/",
-    });
+    res.cookie(
+      "copilote_auth ",
+      await createJwtAuth(check_User._id.toString()),
+      {
+        domain: "localhost",
+        path: "/",
+      }
+    );
     const currentUser = {
       email: check_User.email,
       name: check_User.name,
@@ -103,11 +112,15 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      throw new CustomError("please provide all the fields", 400);
+      return res.status(400).json({
+        msg: "provide the fields",
+      });
     }
-    const check_User = await getUser(email);
+    const check_User = await getUserByMail(email);
     if (!check_User) {
-      throw new CustomError("user is not found , check your credentials", 401);
+      return res.status(404).json({
+        msg: "their no account associated with this email",
+      });
     }
     const salt = await bcrypt.genSalt(12);
     const hash_Password = await bcrypt.hash(password, salt);
@@ -115,15 +128,18 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
       name: check_User.name,
       email: email,
       password: hash_Password,
-      sessionToken: check_User.sessionToken,
     });
-    const new_user = await getUser(email);
+    const new_user = await getUserByMail(email);
     const currentUser = {
       email: new_user.email,
       name: new_user.name,
       profilePic: new_user.profilePicture,
     };
-    res.status(201).json({
+    res.cookie("copilote_auth ", await createJwtAuth(new_user._id.toString()), {
+      domain: "localhost",
+      path: "/",
+    });
+    return res.status(201).json({
       success: true,
       msg: "user password updated successfully",
       user: currentUser,

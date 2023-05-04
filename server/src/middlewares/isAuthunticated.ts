@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { getUserById, getUserByMail } from "../models/User";
 import jsonwebtoken from "jsonwebtoken";
-import { getUserBySessionToken } from "../models/User";
 
 export const isAuthenticated = async (
   req: Request,
@@ -14,17 +14,17 @@ export const isAuthenticated = async (
         msg: "forbidden access",
       });
     }
-    const existing_User = await getUserBySessionToken(token);
-    //check the code bellow
-    if (!existing_User) {
-      return res.status(403).json({
-        msg: "you are not authorized , please login",
-      });
-    }
     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
     if (!decoded) {
       return res.status(401).json({
         msg: "you are not authorized, please login",
+      });
+    }
+    const userId = jsonwebtoken.decode(token);
+    const findUser = await getUserById(userId.toString());
+    if (!findUser) {
+      return res.status(404).json({
+        msg: "their is no user associated with this info",
       });
     }
     next();

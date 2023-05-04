@@ -2,7 +2,7 @@ import { Router } from "express";
 import { LogUser, LogoutUser, RegisterUser } from "./auth";
 import verify from "./verify";
 import passwordUpdate from "./passwordUpdate";
-import gpt from "./gpt";
+import { generateGptResponse } from "./gpt";
 import {
   DeleteRoomRouter,
   createRoomRouter,
@@ -18,7 +18,7 @@ export default (): typeof router => {
   LogoutUser(router);
   verify(router);
   passwordUpdate(router);
-  gpt(router);
+  generateGptResponse(router);
   getRoomRouter(router);
   DeleteRoomRouter(router);
   getAllRoomDetails(router);

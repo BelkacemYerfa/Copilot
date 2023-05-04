@@ -1,9 +1,12 @@
 interface UserMailToSend {
   name: string;
-  verfiyCode: number;
+  verifyCode: number;
 }
 
-export const VerifyMailContent = ({ name, verfiyCode }: UserMailToSend) => {
+export const VerifyMailContent = ({
+  name,
+  verifyCode: verifyCode,
+}: UserMailToSend) => {
   return {
     body: {
       name: name,
@@ -13,7 +16,7 @@ export const VerifyMailContent = ({ name, verfiyCode }: UserMailToSend) => {
           "Please Copy this code and send it from the Form that you have in the copilot App",
         button: {
           color: "#22BC66",
-          text: verfiyCode.toString(),
+          text: verifyCode.toString(),
           link: "http://localhost:5173/",
         },
       },

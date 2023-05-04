@@ -1,4 +1,4 @@
-import { isAuthenticated } from "middlewares/isAuthunticated";
+import { isAuthenticated } from "../middlewares/isAuthunticated";
 import {
   createNewRoom,
   deleteRoom,

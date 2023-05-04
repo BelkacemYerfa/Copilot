@@ -1,17 +1,18 @@
 import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
 import { Request, Response } from "express";
-import { getUser } from "../models/User";
+import { getUserByMail } from "../models/User";
 import { mailConfig } from "../interfaces/mailConfig";
-import { CustomError } from "errors/CustomError";
 import { VerifyMailContent } from "../static/VerfiyMailContent";
 
 export const VerifyMail = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    const checkUser = await getUser(email);
+    const checkUser = await getUserByMail(email);
     if (!checkUser) {
-      throw new CustomError("user not found , check your credentials", 401);
+      return res.status(404).json({
+        msg: "their is no user associate with this email",
+      });
     }
     const verfiyNumber = Math.floor(Math.random() * 1000000);
     const config: mailConfig = {
@@ -30,7 +31,7 @@ export const VerifyMail = async (req: Request, res: Response) => {
       },
     });
     let mail = MailGenerator.generate(
-      VerifyMailContent({ name: checkUser.name, verfiyCode: verfiyNumber })
+      VerifyMailContent({ name: checkUser.name, verifyCode: verfiyNumber })
     );
     let message = {
       from: process.env.USER_MAIL,
@@ -40,7 +41,7 @@ export const VerifyMail = async (req: Request, res: Response) => {
     };
     transporter.sendMail(message).then(() => {
       return res.status(201).json({
-        msg: "email recieved sucssesfully",
+        msg: "email received successfully",
       });
     });
   } catch (error) {

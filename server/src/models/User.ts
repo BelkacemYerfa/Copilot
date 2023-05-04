@@ -1,17 +1,16 @@
 import { Date, Schema, Types, model } from "mongoose";
-
-interface userDocement {
+import jsonwebtoken from "jsonwebtoken";
+interface userDocument {
   name: string;
   email: string;
   profilePicture?: Buffer;
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-  sessionToken: string;
   rooms?: Types.ObjectId[];
 }
 
-export const User = new Schema<userDocement>({
+export const User = new Schema<userDocument>({
   name: {
     type: String,
     required: true,
@@ -37,10 +36,6 @@ export const User = new Schema<userDocement>({
     type: Date,
     default: Date.now(),
   },
-  sessionToken: {
-    type: String,
-    select: false,
-  },
   rooms: [
     {
       type: Schema.Types.ObjectId,
@@ -51,16 +46,20 @@ export const User = new Schema<userDocement>({
 
 export const UserModel = model("users", User, "users");
 
-export const getUser = async (email: string) => UserModel.findOne({ email });
-export const createUser = async (user: userDocement) => UserModel.create(user);
+export const getUserByMail = async (email: string) =>
+  UserModel.findOne({ email });
+export const getUserById = async (userId: string) => UserModel.findById(userId);
+export const createUser = async (user: userDocument) => UserModel.create(user);
 export const deleteUser = async (email: string, id: string) =>
   UserModel.findOneAndDelete({ email, id });
 export const updateUser = async (
   email: string,
   id: string,
-  user: userDocement
+  user: userDocument
 ) => {
   UserModel.findByIdAndUpdate({ email, id }, user, { new: true });
 };
-export const getUserBySessionToken = async (sessionToken: string) =>
-  UserModel.findOne({ sessionToken });
+export const createJwtAuth = async (userId: string) =>
+  await jsonwebtoken.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });

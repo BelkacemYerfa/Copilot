@@ -48,8 +48,8 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
       password,
     };
     logUser(userPostInfo, {
-      onSuccess: () => {
-        navigate("/");
+      onSuccess: (data) => {
+        /* navigate("/") */ console.log(data);
       },
     });
   };
@@ -112,7 +112,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
       />
       <div className="flex justify-center gap-x-1">
         <Text text="Not a Member yet?" />
-        <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
+        <LinkSwitcher to="/auth" text="Sign In" onClick={isVisable} />
       </div>
     </motion.form>
   );

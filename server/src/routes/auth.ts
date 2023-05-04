@@ -1,4 +1,4 @@
-import { isAuthenticated } from "middlewares/isAuthunticated";
+import { isAuthenticated } from "../middlewares/isAuthunticated";
 import { Login, Logout, Register } from "../controllers/auth";
 import { Router } from "express";
 
