@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AnimatedRoutes from "./components/animated/AnimatedRoutes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider, initialState } from "./context/authContext";
 
 function App() {
   const client = new QueryClient();
@@ -13,7 +14,9 @@ function App() {
       <div className="font-Inter">
         <Router>
           <Suspense fallback={<div>loading...</div>}>
-            <AnimatedRoutes />
+            <AuthProvider user={initialState.user} theme={initialState.theme}>
+              <AnimatedRoutes />
+            </AuthProvider>
           </Suspense>
         </Router>
       </div>

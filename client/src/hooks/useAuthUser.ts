@@ -1,6 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { UserAuth } from "../interfaces&types&static/User";
 import axios from "axios";
+import { IUser } from "../@types/auth";
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 
 const registerUser = (user: UserAuth) => {
   return axios.post("http://localhost:5000/api/v1/auth/register", user, {
@@ -20,4 +23,17 @@ export const useLogUser = () => {
 
 export const useRegisterUser = () => {
   return useMutation(registerUser);
+};
+
+type useAuthUserType = {
+  user: IUser;
+  set: () => void;
+};
+
+export const useAuthUser = (): useAuthUserType => {
+  const {
+    state: { user },
+    set,
+  } = useContext(AuthContext);
+  return { user, set };
 };
