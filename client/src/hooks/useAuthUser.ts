@@ -27,7 +27,7 @@ export const useRegisterUser = () => {
 
 type useAuthUserType = {
   user: IUser;
-  set: () => void;
+  set: (user: IUser) => void;
 };
 
 export const useAuthUser = (): useAuthUserType => {

@@ -5,7 +5,9 @@ import {
   createUser,
   getUserByMail,
   updateUser,
+  getUserById,
 } from "../models/User";
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 
 export const Register = async (req: Request, res: Response) => {
   try {
@@ -142,6 +144,48 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
     return res.status(201).json({
       success: true,
       msg: "user password updated successfully",
+      user: currentUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: error,
+    });
+  }
+};
+
+export const LogVerification = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.copilote_auth;
+    if (!token) {
+      return res.status(401).json({
+        msg: "forbidden access",
+      });
+    }
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!decoded) {
+      return res.status(401).json({
+        msg: "you are not authorized, please login",
+      });
+    }
+    const userId = jsonwebtoken.decode(token) as JwtPayload;
+    let userInfo: string[] = [];
+    for (let key in userId) {
+      if (typeof userId[key] === "string") {
+        userInfo.push(userId[key]);
+      }
+    }
+    const findUser = await getUserById(userInfo[0]);
+    if (!findUser) {
+      return res.status(404).json({
+        msg: "their is no user associated with this info",
+      });
+    }
+    const currentUser = {
+      name: findUser.name,
+      email: findUser.email,
+    };
+    res.status(200).json({
+      success: true,
       user: currentUser,
     });
   } catch (error) {

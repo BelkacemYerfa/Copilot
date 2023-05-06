@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { LogUser, LogoutUser, RegisterUser } from "./auth";
+import { LogUser, LogoutUser, RegisterUser, checkAuth } from "./auth";
 import verify from "./verify";
 import passwordUpdate from "./passwordUpdate";
 import { generateGptResponse } from "./gpt";
@@ -16,6 +16,7 @@ export default (): typeof router => {
   RegisterUser(router);
   LogUser(router);
   LogoutUser(router);
+  checkAuth(router);
   verify(router);
   passwordUpdate(router);
   generateGptResponse(router);

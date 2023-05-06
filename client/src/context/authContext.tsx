@@ -1,19 +1,12 @@
-import {
-  ReactElement,
-  ReactNode,
-  createContext,
-  useCallback,
-  useReducer,
-} from "react";
+import { ReactElement, createContext, useCallback, useReducer } from "react";
 import { IUser, ITheme } from "../@types/auth";
-
 interface IStateType {
   user: IUser;
   theme: ITheme;
 }
 
-export const initialState: IStateType = {
-  user: { username: "", profilePicture: "", email: "" },
+export let initialState: IStateType = {
+  user: { name: "", profilePicture: "", email: "" },
   theme: { theme: "" },
 };
 
@@ -23,15 +16,18 @@ const enum REDUCER_ACTIONS {
 
 type Reducer_Action = {
   type: REDUCER_ACTIONS;
-  payload?: string;
+  payload: IUser;
 };
 
 const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
   switch (action.type) {
     case REDUCER_ACTIONS.SET:
-      return { ...state, user: state.user };
+      return {
+        user: action.payload,
+        theme: state.theme,
+      };
     default:
-      return state;
+      throw new Error();
   }
 };
 
@@ -42,7 +38,7 @@ type ChildrenType = {
 const useAuthContext = (initialState: IStateType) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const set = useCallback(
-    () => dispatch({ type: REDUCER_ACTIONS.SET, payload: "" }),
+    (user: IUser) => dispatch({ type: REDUCER_ACTIONS.SET, payload: user }),
     []
   );
 
@@ -68,5 +64,3 @@ export const AuthProvider = ({
     </AuthContext.Provider>
   );
 };
-
-//export const AuthContext = createContext<AuthContextType>(initialState);

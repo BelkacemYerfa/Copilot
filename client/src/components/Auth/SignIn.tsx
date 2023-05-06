@@ -15,7 +15,7 @@ import { SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import TextError from "../shared/Text/TextError";
-import { useLogUser } from "../../hooks/useAuthUser";
+import { useAuthUser, useLogUser } from "../../hooks/useAuthUser";
 import { UserAuth } from "../../interfaces&types&static/User";
 import { expression } from "../../interfaces&types&static/regExEmail";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +38,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   } = useForm<UserFormSchema>({
     resolver: zodResolver(UserSchemaLogin),
   });
+  const { user, set } = useAuthUser();
   const { mutate: logUser, isLoading } = useLogUser();
   const submiter: SubmitHandler<UserFormSchema> = async (
     userInfo: UserFormSchema
@@ -49,7 +50,12 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     };
     logUser(userPostInfo, {
       onSuccess: (data) => {
-        /* navigate("/") */ console.log(data);
+        console.log(data);
+        set(data?.data.user);
+        navigate("/");
+      },
+      onError: (data) => {
+        console.log(data);
       },
     });
   };
