@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../hooks/useAuthUser";
+import Loader from "../components/shared/loader/Loader";
 interface IStateType {
   user: IUser;
   theme: ITheme;
@@ -76,8 +77,11 @@ export const AuthProvider = ({
     if (data?.user) {
       set(data.user);
       navigate("/");
+    } else {
+      navigate("/auth");
     }
   }, [data]);
+  if (isLoading) return <Loader />;
   return (
     <AuthContext.Provider value={{ set, state }}>
       {children}

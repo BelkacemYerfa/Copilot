@@ -19,6 +19,7 @@ import { useAuthUser, useLogUser } from "../../hooks/useAuthUser";
 import { UserAuth } from "../../interfaces&types&static/User";
 import { expression } from "../../interfaces&types&static/regExEmail";
 import { useNavigate } from "react-router-dom";
+import Loader from "../shared/loader/Loader";
 
 export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
@@ -72,7 +73,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     return () => subscribe.unsubscribe();
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <Loader />;
 
   return (
     <motion.form

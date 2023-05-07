@@ -22,6 +22,7 @@ import TextError from "../shared/Text/TextError";
 import { useRegisterUser } from "../../hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
 import { expression } from "../../interfaces&types&static/regExEmail";
+import Loader from "../shared/loader/Loader";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
@@ -77,7 +78,7 @@ const SignUp = ({ isVisable }: SignProps) => {
     return () => subscribe.unsubscribe();
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <Loader />;
 
   return (
     <motion.form
