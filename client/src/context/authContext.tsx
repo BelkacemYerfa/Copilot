@@ -1,12 +1,17 @@
 import { ReactElement, createContext, useCallback, useReducer } from "react";
 import { IUser, ITheme } from "../@types/auth";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "../hooks/useAuthUser";
 interface IStateType {
   user: IUser;
   theme: ITheme;
 }
 
 export let initialState: IStateType = {
-  user: { name: "", profilePicture: "", email: "" },
+  user: { name: "", email: "" },
   theme: { theme: "" },
 };
 
@@ -58,8 +63,23 @@ export const AuthProvider = ({
   children,
   ...initialState
 }: ChildrenType & IStateType): ReactElement => {
+  const { state, set } = useAuthContext(initialState);
+  const { user } = useAuthUser();
+  const navigate = useNavigate();
+  const { data, isLoading } = useQuery(["user"], async () => {
+    const { data } = await axios.get("http://localhost:5000/api/v1/islogged", {
+      withCredentials: true,
+    });
+    return data;
+  });
+  useEffect(() => {
+    if (data?.user) {
+      set(data.user);
+      navigate("/");
+    }
+  }, [data]);
   return (
-    <AuthContext.Provider value={useAuthContext(initialState)}>
+    <AuthContext.Provider value={{ set, state }}>
       {children}
     </AuthContext.Provider>
   );

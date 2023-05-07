@@ -9,5 +9,7 @@ export const PrivateRoute = (): JSX.Element => {
   const navigate = useNavigate();
   const { user, set } = useAuthUser();
   //check the is logged session method with the context api
+  console.log(user);
+
   return user.name ? <Outlet /> : <Navigate to="/auth" />;
 };
