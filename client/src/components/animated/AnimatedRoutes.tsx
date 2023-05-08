@@ -12,6 +12,7 @@ const AnimatedRoutes = () => {
       <Routes key={location.pathname} location={location}>
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
+          <Route path="room/:id" element={<Home />} />
         </Route>
         <Route path="/auth" element={<Auth />} />
         <Route path="*" element={<NotFound />} />

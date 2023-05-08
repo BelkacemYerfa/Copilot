@@ -1,22 +1,17 @@
+import DefaultHome from "../components/Home/DefaultHome";
+import Room from "../components/Home/Room";
 import SideBar from "../components/Home/Sidebar";
 import { useAuthUser } from "../hooks/useAuthUser";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
   const { user } = useAuthUser();
   console.log(user);
+  const { id } = useParams();
   return (
-    <section className="flex ">
+    <section className="flex relative">
       <SideBar />
-      <section className="basis-[80%]">
-        {user.name ? (
-          <>
-            <h1>{user.name}</h1>
-            <p>{user.email}</p>
-          </>
-        ) : (
-          <h1>Not logged in</h1>
-        )}
-      </section>
+      {id ? <Room id={id} /> : <DefaultHome />}
     </section>
   );
 };
