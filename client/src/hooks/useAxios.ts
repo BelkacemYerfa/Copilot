@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 
-interface QueryProp<T> {
+interface QueryProp {
   queryKey: string;
-  fetchFunc: () => Promise<T>;
+  fetchFunc: <T>() => Promise<T>;
 }
 
-const useAxios = <T>({ queryKey, fetchFunc }: QueryProp<T>) => {
+const useAxios = <T>({ queryKey, fetchFunc }: QueryProp) => {
   return useQuery<T>([`${queryKey}`], fetchFunc);
 };
 

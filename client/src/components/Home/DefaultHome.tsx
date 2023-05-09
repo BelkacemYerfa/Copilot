@@ -15,11 +15,11 @@ const DefaultHome = () => {
           <TitleInfo text="examples" />
           <ModelInfo Infos={Examples} link={true} />
         </ModelInfoWrapper>
-        <ModelInfoWrapper shapeBg="#364E9F">
+        <ModelInfoWrapper shapeBg="#1C1C1C">
           <TitleInfo text="Capabilities" />
           <ModelInfo Infos={Capabilities} link={false} />
         </ModelInfoWrapper>
-        <ModelInfoWrapper shapeBg="#364E9F">
+        <ModelInfoWrapper shapeBg="#F9A708">
           <TitleInfo text="Limitations" />
           <ModelInfo Infos={Limitations} link={false} />
         </ModelInfoWrapper>

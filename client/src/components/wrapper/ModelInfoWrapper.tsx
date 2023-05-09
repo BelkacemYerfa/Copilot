@@ -7,7 +7,12 @@ type ModelInfoWrapperProps = {
 
 const ModelInfoWrapper = ({ children, shapeBg }: ModelInfoWrapperProps) => {
   return (
-    <section className={`bg-black py-4 px-10 rounded-[2rem] space-y-2 w-full`}>
+    <section
+      style={{
+        backgroundColor: shapeBg,
+      }}
+      className={`py-4 px-10 rounded-[2rem] space-y-2 w-full`}
+    >
       {children}
     </section>
   );

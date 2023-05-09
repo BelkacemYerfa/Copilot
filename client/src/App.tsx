@@ -14,7 +14,6 @@ function App() {
       },
     },
   });
-
   return (
     <QueryClientProvider client={client}>
       <div className="font-Inter">

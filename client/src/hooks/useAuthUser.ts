@@ -6,13 +6,13 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
 const registerUser = (user: UserAuth) => {
-  return axios.post("http://localhost:5000/api/v1/auth/register", user, {
+  return axios.post("http://localhost:8000/api/v1/auth/register", user, {
     withCredentials: true,
   });
 };
 
 const loginUser = (user: UserAuth) => {
-  return axios.post("http://localhost:5000/api/v1/auth/login", user, {
+  return axios.post("http://localhost:8000/api/v1/auth/login", user, {
     withCredentials: true,
   });
 };

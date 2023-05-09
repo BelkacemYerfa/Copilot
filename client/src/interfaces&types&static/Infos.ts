@@ -15,3 +15,5 @@ export const Limitations = [
   "May occasionally produce harmful instructions or biased content.",
   "Limited knowledge of world andevents after 2021.",
 ];
+
+export const BASE_URL = "http://localhost:8000/api/v1/";

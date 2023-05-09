@@ -58,7 +58,7 @@ export const Register = async (req: Request, res: Response) => {
 export const Logout = async (req: Request, res: Response) => {
   try {
     res.clearCookie("copilote_auth", { path: "/" });
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
     });
   } catch (error) {

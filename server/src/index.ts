@@ -22,8 +22,8 @@ app.use("/api/v1", route());
 const start = async (): Promise<void> => {
   try {
     await connectDB(process.env.MONGO_URI);
-    app.listen(5000, () => {
-      console.log("Server started on port 5000");
+    app.listen(8000, () => {
+      console.log("Server started on port 8000");
     });
   } catch (e) {
     console.log(e);

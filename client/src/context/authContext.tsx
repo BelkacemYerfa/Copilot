@@ -47,8 +47,9 @@ const useAuthContext = (initialState: IStateType) => {
     (user: IUser) => dispatch({ type: REDUCER_ACTIONS.SET, payload: user }),
     []
   );
+  const baseUrl = "http://localhost:8000/api/v1";
 
-  return { state, set };
+  return { state, set, baseUrl };
 };
 
 type AuthContextType = ReturnType<typeof useAuthContext>;
@@ -56,6 +57,7 @@ type AuthContextType = ReturnType<typeof useAuthContext>;
 const initialContextState: AuthContextType = {
   state: initialState,
   set: () => {},
+  baseUrl: "",
 };
 
 export const AuthContext = createContext<AuthContextType>(initialContextState);
@@ -64,11 +66,10 @@ export const AuthProvider = ({
   children,
   ...initialState
 }: ChildrenType & IStateType): ReactElement => {
-  const { state, set } = useAuthContext(initialState);
-  const { user } = useAuthUser();
+  const { state, set, baseUrl } = useAuthContext(initialState);
   const navigate = useNavigate();
   const { data, isLoading } = useQuery(["user"], async () => {
-    const { data } = await axios.get("http://localhost:5000/api/v1/islogged", {
+    const { data } = await axios.get(`${baseUrl}/islogged`, {
       withCredentials: true,
     });
     return data;
@@ -83,7 +84,7 @@ export const AuthProvider = ({
   }, [data]);
   if (isLoading) return <Loader />;
   return (
-    <AuthContext.Provider value={{ set, state }}>
+    <AuthContext.Provider value={{ set, state, baseUrl }}>
       {children}
     </AuthContext.Provider>
   );
