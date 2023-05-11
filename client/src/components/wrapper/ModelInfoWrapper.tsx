@@ -11,7 +11,7 @@ const ModelInfoWrapper = ({ children, shapeBg }: ModelInfoWrapperProps) => {
       style={{
         backgroundColor: shapeBg,
       }}
-      className={`py-4 px-10 rounded-[2rem] space-y-2 w-full`}
+      className={`py-4 px-5 rounded-[1.5rem] space-y-2 w-[100%] md:w-[80%]`}
     >
       {children}
     </section>

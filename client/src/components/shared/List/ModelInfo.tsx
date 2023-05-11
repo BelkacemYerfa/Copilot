@@ -9,7 +9,7 @@ export const ModelInfo = ({ Infos, link }: ModelInfoProps) => {
       {Infos.map((info, index) => (
         <li
           key={index}
-          className={`text-lg text-white list-disc font-normal ${
+          className={`text-base text-white list-disc font-normal ${
             link ? "cursor-pointer hover:underline" : "cursor-text"
           }`}
         >

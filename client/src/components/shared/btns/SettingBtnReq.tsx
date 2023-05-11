@@ -6,20 +6,10 @@ import { useNavigate } from "react-router-dom";
 interface RoomLinkProps {
   text: string;
   Icon: string;
-  endPoint: string;
+  fetchFunc: () => void;
 }
 
-export const SettingBtnReq = ({ text, Icon, endPoint }: RoomLinkProps) => {
-  const navigate = useNavigate();
-  const fetchFunc = async () => {
-    const { data } = await axios.get(`${BASE_URL}${endPoint}`, {
-      withCredentials: true,
-    });
-    if (data) {
-      console.log(data);
-      navigate("/auth");
-    }
-  };
+export const SettingBtnReq = ({ text, Icon, fetchFunc }: RoomLinkProps) => {
   return (
     <button
       onClick={fetchFunc}

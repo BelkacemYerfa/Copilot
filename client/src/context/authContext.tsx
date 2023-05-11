@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthUser } from "../hooks/useAuthUser";
 import Loader from "../components/shared/loader/Loader";
 interface IStateType {
   user: IUser;
