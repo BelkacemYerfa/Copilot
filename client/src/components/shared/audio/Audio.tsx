@@ -1,5 +1,5 @@
 const AudioReader = () => {
-  // Welcome to AssemblyAI! Get started with the API by transcribing
+  /* // Welcome to AssemblyAI! Get started with the API by transcribing
   // a file using JavaScript.
   //
   // In this example, we'll transcribe a local file. Get started by
@@ -119,8 +119,8 @@ const AudioReader = () => {
     // Print the completed transcript object
     console.log("Transcript:", transcript.text);
   }
-
-  main();
+ */
+  /* main(); */
   return (
     <div>
       <input type="file" accept="audio/*" />

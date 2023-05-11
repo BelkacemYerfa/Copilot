@@ -10,7 +10,7 @@ import { ChatInput } from "../shared/Input/ChatInput";
 
 const DefaultHome = () => {
   return (
-    <section className="basis-[80%] flex flex-col gap-y-7 items-center justify-center">
+    <section className="basis-full md:basis-[80%] flex flex-col gap-y-7 items-center justify-center">
       <section className="relative m-auto w-[90%] flex flex-col gap-y-3 ">
         <section className="m-auto w-[90%] p-5 flex-1 flex  flex-col items-center gap-y-7">
           <ModelInfoWrapper shapeBg="#364E9F">
@@ -25,28 +25,8 @@ const DefaultHome = () => {
             <TitleInfo text="Limitations" />
             <ModelInfo Infos={Limitations} link={false} />
           </ModelInfoWrapper>
-          <ModelInfoWrapper shapeBg="#F9A708">
-            <TitleInfo text="Limitations" />
-            <ModelInfo Infos={Limitations} link={false} />
-          </ModelInfoWrapper>
-          <ModelInfoWrapper shapeBg="#F9A708">
-            <TitleInfo text="Limitations" />
-            <ModelInfo Infos={Limitations} link={false} />
-          </ModelInfoWrapper>
-          <ModelInfoWrapper shapeBg="#F9A708">
-            <TitleInfo text="Limitations" />
-            <ModelInfo Infos={Limitations} link={false} />
-          </ModelInfoWrapper>
-          <ModelInfoWrapper shapeBg="#F9A708">
-            <TitleInfo text="Limitations" />
-            <ModelInfo Infos={Limitations} link={false} />
-          </ModelInfoWrapper>
-          <ModelInfoWrapper shapeBg="#F9A708">
-            <TitleInfo text="Limitations" />
-            <ModelInfo Infos={Limitations} link={false} />
-          </ModelInfoWrapper>
         </section>
-        <section className="sticky bottom-0 bg-white p-5 rounded-md">
+        <section className="sticky bottom-0 bg-white p-4 rounded-md">
           <ChatInput />
         </section>
       </section>
