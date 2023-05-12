@@ -30,22 +30,13 @@ const SideBar = () => {
     }
   };
   return (
-    <section className="fixed sm:sticky top-0 left-0 bg-white w-[80%] h-screen flex flex-col sm:w-[20%] border-r border-solid border-btn_border_color space-y-2">
+    <section className="fixed  z-10 sm:sticky top-0 left-0 bg-white w-[80%] h-screen flex flex-col sm:w-[20%] border-r border-solid border-btn_border_color space-y-2">
       <div className="flex-1 ">
         <div className="p-5">
           <NewChatBtn text="New Chat" Icon={Add} />
         </div>
         <ol className="channelsList pl-5 space-y-1 w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-btn_border_color ">
           <RoomLink to="/room/1" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
           <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
         </ol>
         <div className="absolute bottom-0 w-full left-0 bg-white px-5  sm:p-5 flex flex-col gap-y-1 border-t border-solid border-btn_border_color ">

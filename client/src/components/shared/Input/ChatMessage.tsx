@@ -48,6 +48,27 @@ export const ChatMessage = ({ userId }: ChatMessageProps) => {
             "Tell me about Snow Dashboard UI Kit. \n",
             "What is it? \n",
             "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
+            "Tell me about Snow Dashboard UI Kit. \n",
+            "What is it? \n",
+            "what can i do with it? \n",
           ]}
         />
         {userId === name ? (
@@ -91,7 +112,7 @@ const WritingAnimation = ({ textArray }: Props) => {
         setCurrentText((prevText) => prevText + textArray[index][letterCount]);
         setLetterCount((prevCount) => prevCount + 1);
       }
-    }, 50);
+    }, 10);
     return () => clearTimeout(interval);
   }, [index, letterCount, textArray]);
 

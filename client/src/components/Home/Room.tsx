@@ -9,30 +9,22 @@ interface RoomProps {
 const Room = ({ id }: RoomProps) => {
   const { user } = useAuthUser();
   return (
-    <section className="relative basis-full md:basis-[80%] flex flex-col ">
-      <div className="flex-1">
-        <h1>{user.name}</h1>
-        <p>{user.email}</p>
-        <p>page id : {id}</p>
+    <section
+      className="relative basis-full md:basis-[80%] flex flex-col overflow-y-scroll 
+       max-h-[85%] scrollbar-thin scrollbar-thumb-black "
+    >
+      <div className="flex-1 ">
         <ChatMessage userId={user.name} />
       </div>
-      <section className=" m-auto w-[90%] flex flex-col gap-y-3 ">
-        <section className="sticky bottom-0 bg-white p-4 rounded-md">
-          <ChatInput />
+      <section className="fixed bottom-0 w-[80%] bg-white ">
+        <section className=" w-[90%] m-auto flex flex-col gap-y-3 ">
+          <section className=" bottom-0 p-4 rounded-md">
+            <ChatInput />
+          </section>
         </section>
       </section>
     </section>
   );
 };
-
-{
-  /* <WritingAnimation
-  textArray={[
-    "Hello, world! \n",
-    "Welcome to my website! \n",
-    "Let's create something amazing! \n",
-  ]}
-/> */
-}
 
 export default Room;
