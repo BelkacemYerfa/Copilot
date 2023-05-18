@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 
 type UserPromptType = z.infer<typeof UserPrompt>;
-
 export const ChatInput = () => {
   const [InputValidator, setInputValidator] = useState<boolean>(false);
   const { register, handleSubmit, watch } = useForm<UserPromptType>({
@@ -47,6 +46,7 @@ export const ChatInput = () => {
       >
         <input
           {...register("input")}
+          value={watch("input")}
           type="text"
           className="bg-transparent border-none outline-none focus-within:outline-none w-full rounded-lg "
           placeholder="Type Something ..."

@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-*::-webkit-scrollbar {
-  border-radius: 4px;
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 input::-webkit-outer-spin-button,

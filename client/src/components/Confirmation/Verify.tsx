@@ -43,7 +43,9 @@ const Verify = ({ text = "746535", setCount }: VerifyProps) => {
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
         </p>
-        <CodeHolder code={text.split("")} codeChange={setNewCode} />
+        <CodeHolder code={text.split("")} codeChange={setNewCode} />u
+
+        
       </div>
 
       <SignBtn text="Submit" disable={false} />

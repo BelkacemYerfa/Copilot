@@ -9,11 +9,16 @@ interface RoomProps {
 const Room = ({ id }: RoomProps) => {
   const { user } = useAuthUser();
   return (
-    <section
-      className="relative basis-full md:basis-[80%] flex flex-col overflow-y-scroll 
-       max-h-[85%] scrollbar-thin scrollbar-thumb-black "
-    >
-      <div className="flex-1 ">
+    <section className="relative basis-full md:basis-[80%] flex flex-col  overflow-y-scroll ChatMessagesHolder ">
+      <div className="flex-1 w-full ">
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
+        <ChatMessage userId={user.name} />
         <ChatMessage userId={user.name} />
       </div>
       <section className="fixed bottom-0 w-[80%] bg-white ">

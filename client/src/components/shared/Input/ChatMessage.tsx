@@ -18,7 +18,7 @@ export const ChatMessage = ({ userId }: ChatMessageProps) => {
       style={{
         backgroundColor: userId === email ? "#FFFFFF" : "#F7F9FB",
       }}
-      className="w-full h-fit p-4 "
+      className="w-full h-fit p-4 pl-6 "
     >
       <div className="m-auto w-[80%] flex gap-x-4">
         {userId === email ? (
@@ -45,27 +45,6 @@ export const ChatMessage = ({ userId }: ChatMessageProps) => {
         )}
         <WritingAnimation
           textArray={[
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
-            "Tell me about Snow Dashboard UI Kit. \n",
-            "What is it? \n",
-            "what can i do with it? \n",
             "Tell me about Snow Dashboard UI Kit. \n",
             "What is it? \n",
             "what can i do with it? \n",
