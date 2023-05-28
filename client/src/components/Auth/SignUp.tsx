@@ -97,8 +97,7 @@ const SignUp = ({ isVisable }: SignProps) => {
 
   return (
     <>
-      <motion.form
-        onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+      <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
@@ -113,47 +112,54 @@ const SignUp = ({ isVisable }: SignProps) => {
           <MainBtn text="Sign in with Apple" Icon={apple} />
         </div>
         <Swicher />
-        <div className="flex flex-col gap-y-5">
-          <div className="flex flex-col gap-y-4">
-            <div>
-              <Input placeholderType="Email" RegisterInput={register} />
-              {errors.email ? <TextError error={errors.email.message} /> : null}
+        <form
+          onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+          className="space-y-3"
+        >
+          <div className="flex flex-col gap-y-5">
+            <div className="flex flex-col gap-y-4">
+              <div>
+                <Input placeholderType="Email" RegisterInput={register} />
+                {errors.email ? (
+                  <TextError error={errors.email.message} />
+                ) : null}
+              </div>
+              <div>
+                <Input placeholderType="Password" RegisterInput={register} />
+                {errors.password ? (
+                  <TextError error={errors.password.message} />
+                ) : null}
+              </div>
+              <div>
+                <Input
+                  placeholderType="Password"
+                  placeholderCase="Repeat Password"
+                  RegisterInput={register}
+                />
+                {errors.RepeatPassword ? (
+                  <TextError error={errors.RepeatPassword.message} />
+                ) : null}
+              </div>
             </div>
-            <div>
-              <Input placeholderType="Password" RegisterInput={register} />
-              {errors.password ? (
-                <TextError error={errors.password.message} />
-              ) : null}
-            </div>
-            <div>
-              <Input
-                placeholderType="Password"
-                placeholderCase="Repeat Password"
-                RegisterInput={register}
-              />
-              {errors.RepeatPassword ? (
-                <TextError error={errors.RepeatPassword.message} />
-              ) : null}
+            <div className="flex justify-start w-full">
+              <AcceptTerms text="I Accept the " dist={dist} />
             </div>
           </div>
-          <div className="flex justify-start w-full">
-            <AcceptTerms text="I Accept the " dist={dist} />
-          </div>
-        </div>
-        <SignBtn
-          text="Sign Up"
-          isLoading={isLoading}
-          disable={
-            !emailValidation ||
-            !passwordValidation ||
-            !confirmPasswordValidation
-          }
-        />
+          <SignBtn
+            text="Sign Up"
+            isLoading={isLoading}
+            disable={
+              !emailValidation ||
+              !passwordValidation ||
+              !confirmPasswordValidation
+            }
+          />
+        </form>
         <div className="flex justify-center gap-x-1">
           <Text text="Already have an Account?" />
           <LinkSwitcher to="/auth" text="Sign In" onClick={isVisable} />
         </div>
-      </motion.form>
+      </motion.div>
       {error ? <ToastContainer theme="colored" /> : null}
     </>
   );

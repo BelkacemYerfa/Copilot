@@ -12,9 +12,11 @@ import axios from "axios";
 import { BASE_URL } from "../../interfaces&types&static/Infos";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../../hooks/useAuthUser";
+import { useEffect, useState } from "react";
 
 const SideBar = () => {
   const navigate = useNavigate();
+  const [resize, setResize] = useState<boolean>(false);
   const { set } = useAuthUser();
   //you can react-query to make the request using the refetch func and making an option that says it's manual
   const logOutFunc = async () => {
@@ -29,26 +31,51 @@ const SideBar = () => {
       navigate("/auth");
     }
   };
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 640 && window.innerWidth < 760) {
+        setResize(true);
+        console.log(window.innerWidth);
+      } else setResize(false);
+    });
+    return () =>
+      window.removeEventListener("resize", () => {
+        setResize(false);
+      });
+  });
   return (
     <section className="fixed  z-10 sm:sticky top-0 left-0 bg-white w-[80%] h-screen flex flex-col sm:w-[20%] border-r border-solid border-btn_border_color space-y-2">
       <div className="flex-1 ">
         <div className="p-5">
-          <NewChatBtn text="New Chat" Icon={Add} />
+          <NewChatBtn text="New Chat" Icon={Add} resize={resize} />
         </div>
-        <ol className="channelsList pl-5 space-y-1 w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-btn_border_color ">
-          <RoomLink to="/room/1" name="Ai Chat Tool Ethics" />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" />
+        <ol
+          className={`channelsList space-y-1 w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-btn_border_color ${
+            resize ? "pl-0" : "pl-5"
+          }`}
+        >
+          <RoomLink to="/room/1" name="Ai Chat Tool Ethics" resize={resize} />
+          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" resize={resize} />
         </ol>
-        <div className="absolute bottom-0 w-full left-0 bg-white px-5  sm:p-5 flex flex-col gap-y-1 border-t border-solid border-btn_border_color ">
+        <div
+          className="absolute bottom-0 w-full left-0 bg-white px-5 
+        py-3 sm:p-5 flex flex-col gap-y-1 border-t border-solid border-btn_border_color "
+        >
           <SettingBtnReq
             text="Clear conversations"
             Icon={Trash}
             fetchFunc={() => {}}
+            resize={resize}
           />
-          <Setting text="Light mode" Icon={Light} />
-          <Setting text="My  account" Icon={Account} />
-          <Setting text="Updates & FAQ" Icon={Faq} />
-          <SettingBtnReq text="Log out" Icon={LogOut} fetchFunc={logOutFunc} />
+          <Setting text="Light mode" Icon={Light} resize={resize} />
+          <Setting text="My account" Icon={Account} resize={resize} />
+          <Setting text="Updates & FAQ" Icon={Faq} resize={resize} />
+          <SettingBtnReq
+            text="Log out"
+            Icon={LogOut}
+            fetchFunc={logOutFunc}
+            resize={resize}
+          />
         </div>
       </div>
     </section>

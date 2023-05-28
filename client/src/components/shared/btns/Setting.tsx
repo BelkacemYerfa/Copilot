@@ -1,15 +1,20 @@
 interface RoomLinkProps {
   text: string;
   Icon: string;
+  resize: boolean;
 }
 
-export const Setting = ({ text, Icon }: RoomLinkProps) => {
+export const Setting = ({ text, Icon, resize }: RoomLinkProps) => {
   return (
-    <button className="flex items-center px-4 py-3 gap-x-[14.25px] text-sm font-normal text-main_color duration-300 ease-in-out rounded-lg hover:bg-auth_bg_main_color ">
+    <button
+      className={`flex items-center px-4 py-3 gap-x-[14.25px] text-sm font-normal text-main_color duration-300 ease-in-out rounded-lg hover:bg-auth_bg_main_color ${
+        resize ? "justify-center" : "justify-start"
+      }`}
+    >
       <div>
         <img src={Icon} alt={text} />
       </div>
-      {text}
+      {!resize ? <p className="truncate">{text}</p> : null}
     </button>
   );
 };

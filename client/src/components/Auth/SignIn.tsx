@@ -89,8 +89,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
 
   return (
     <>
-      <motion.form
-        onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+      <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
@@ -105,38 +104,45 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
           <MainBtn text="Sign in with Apple" Icon={apple} />
         </div>
         <Swicher />
-        <div className="flex flex-col gap-y-2">
-          <div className="flex flex-col gap-y-4">
-            <div>
-              <Input placeholderType="Email" RegisterInput={register} />
-              {errors.email ? <TextError error={errors.email.message} /> : null}
+        <form
+          onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+          className="space-y-2"
+        >
+          <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-4">
+              <div>
+                <Input placeholderType="Email" RegisterInput={register} />
+                {errors.email ? (
+                  <TextError error={errors.email.message} />
+                ) : null}
+              </div>
+              <div>
+                <Input placeholderType="Password" RegisterInput={register} />
+                {errors.password ? (
+                  <TextError error={errors.password.message} />
+                ) : null}
+              </div>
             </div>
-            <div>
-              <Input placeholderType="Password" RegisterInput={register} />
-              {errors.password ? (
-                <TextError error={errors.password.message} />
-              ) : null}
+            <div className="flex justify-end w-full">
+              <LinkSwitcher
+                to="/auth"
+                text="forgot password?"
+                //sendPass={}
+                onClick={emailValidation ? setCount : () => null}
+              />
             </div>
           </div>
-          <div className="flex justify-end w-full">
-            <LinkSwitcher
-              to="/auth"
-              text="forgot password?"
-              //sendPass={}
-              onClick={emailValidation ? setCount : () => null}
-            />
-          </div>
-        </div>
-        <SignBtn
-          text="Sign In"
-          isLoading={isLoading}
-          disable={!emailValidation || !passwordValidation}
-        />
+          <SignBtn
+            text="Sign In"
+            isLoading={isLoading}
+            disable={!emailValidation || !passwordValidation}
+          />
+        </form>
         <div className="flex justify-center gap-x-1">
           <Text text="Not a Member yet?" />
           <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
         </div>
-      </motion.form>
+      </motion.div>
       {error ? <ToastContainer position="top-right" /> : null}
     </>
   );

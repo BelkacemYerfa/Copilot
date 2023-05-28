@@ -39,7 +39,7 @@ export const Register = async (req: Request, res: Response) => {
       "copilote_auth ",
       await createJwtAuth(RegisterUser._id.toString()),
       {
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24 * 7 * 365,
         domain: "localhost",
         path: "/",
       }
@@ -93,7 +93,7 @@ export const Login = async (req: Request, res: Response) => {
       "copilote_auth ",
       await createJwtAuth(check_User._id.toString()),
       {
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24 * 7 * 365,
         domain: "localhost",
         path: "/",
       }
