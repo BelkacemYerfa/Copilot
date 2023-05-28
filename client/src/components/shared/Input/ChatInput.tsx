@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import Audio from "../../../assets/icons/audio.svg";
 import picture from "../../../assets/icons/picture.svg";
-import send from "../../../assets/icons/send.svg";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form";
-import { expression } from "../../../interfaces&types&static/regExEmail";
 import { UserPrompt } from "../../../validation/ChatInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";

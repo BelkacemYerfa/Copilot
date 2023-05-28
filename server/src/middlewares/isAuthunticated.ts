@@ -9,7 +9,6 @@ export const isAuthenticated = async (
 ) => {
   try {
     const token = req.cookies.copilote_auth;
-    console.log(token);
     if (!token) {
       return res.status(401).json({
         msg: "forbidden access",

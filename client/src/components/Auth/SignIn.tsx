@@ -19,7 +19,8 @@ import { useAuthUser, useLogUser } from "../../hooks/useAuthUser";
 import { UserAuth } from "../../interfaces&types&static/User";
 import { expression } from "../../interfaces&types&static/regExEmail";
 import { useNavigate } from "react-router-dom";
-import Loader from "../shared/loader/Loader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
@@ -31,6 +32,8 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   const navigate = useNavigate();
   const [emailValidation, setEmailValidation] = useState<boolean>(false);
   const [passwordValidation, setPasswordValidation] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<unknown>();
+
   const {
     register,
     handleSubmit,
@@ -40,7 +43,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     resolver: zodResolver(UserSchemaLogin),
   });
   const { user, set } = useAuthUser();
-  const { mutate: logUser, isLoading } = useLogUser();
+  const { mutate: logUser, isLoading, error } = useLogUser();
   const submiter: SubmitHandler<UserFormSchema> = async (
     userInfo: UserFormSchema
   ) => {
@@ -51,12 +54,21 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     };
     logUser(userPostInfo, {
       onSuccess: (data) => {
-        console.log(data);
         set(data?.data.user);
         navigate("/");
       },
       onError: (data) => {
         console.log(data);
+        toast.error("You are not authorized , please check your credentials", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       },
     });
   };
@@ -69,57 +81,63 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
         setPasswordValidation(true);
       else setPasswordValidation(false);
     });
-    return () => subscribe.unsubscribe();
+    return () => {
+      subscribe.unsubscribe();
+    };
   });
-
-  if (isLoading) return <Loader />;
+  //if (isLoading) return <Loader />;
 
   return (
-    <motion.form
-      onSubmit={handleSubmit(submiter, (err) => console.log(err))}
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 20, opacity: 0 }}
-      className="text-center space-y-7 "
-    >
-      <div className="space-y-2">
-        <h2 className="text-2xl/9 text-main_color font-semibold">Sing In</h2>
-        <Text text="Copilot" />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-y-2   items-center gap-x-4">
-        <MainBtn text="Sign in with Google" Icon={google} />
-        <MainBtn text="Sign in with Apple" Icon={apple} />
-      </div>
-      <Swicher />
-      <div className="flex flex-col gap-y-2">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <Input placeholderType="Email" RegisterInput={register} />
-            {errors.email ? <TextError error={errors.email.message} /> : null}
+    <>
+      <motion.form
+        onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full sm:w-fit text-center space-y-7 "
+      >
+        <div className="space-y-2">
+          <h2 className="text-2xl/9 text-main_color font-semibold">Sing In</h2>
+          <Text text="Copilot" />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-y-2   items-center gap-x-4">
+          <MainBtn text="Sign in with Google" Icon={google} />
+          <MainBtn text="Sign in with Apple" Icon={apple} />
+        </div>
+        <Swicher />
+        <div className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-4">
+            <div>
+              <Input placeholderType="Email" RegisterInput={register} />
+              {errors.email ? <TextError error={errors.email.message} /> : null}
+            </div>
+            <div>
+              <Input placeholderType="Password" RegisterInput={register} />
+              {errors.password ? (
+                <TextError error={errors.password.message} />
+              ) : null}
+            </div>
           </div>
-          <div>
-            <Input placeholderType="Password" RegisterInput={register} />
-            {errors.password ? (
-              <TextError error={errors.password.message} />
-            ) : null}
+          <div className="flex justify-end w-full">
+            <LinkSwitcher
+              to="/auth"
+              text="forgot password?"
+              //sendPass={}
+              onClick={emailValidation ? setCount : () => null}
+            />
           </div>
         </div>
-        <div className="flex justify-end w-full">
-          <LinkSwitcher
-            to="/auth"
-            text="forgot password?"
-            onClick={emailValidation ? setCount : () => null}
-          />
+        <SignBtn
+          text="Sign In"
+          isLoading={isLoading}
+          disable={!emailValidation || !passwordValidation}
+        />
+        <div className="flex justify-center gap-x-1">
+          <Text text="Not a Member yet?" />
+          <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
         </div>
-      </div>
-      <SignBtn
-        text="Sign In"
-        disable={!emailValidation || !passwordValidation}
-      />
-      <div className="flex justify-center gap-x-1">
-        <Text text="Not a Member yet?" />
-        <LinkSwitcher to="/auth" text="Sign In" onClick={isVisable} />
-      </div>
-    </motion.form>
+      </motion.form>
+      {error ? <ToastContainer position="top-right" /> : null}
+    </>
   );
 };

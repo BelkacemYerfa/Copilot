@@ -19,10 +19,11 @@ import { z } from "zod";
 import { UserAuth } from "../../interfaces&types&static/User";
 import { useState, useEffect } from "react";
 import TextError from "../shared/Text/TextError";
-import { useRegisterUser } from "../../hooks/useAuthUser";
+import { useAuthUser, useRegisterUser } from "../../hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
 import { expression } from "../../interfaces&types&static/regExEmail";
-import Loader from "../shared/loader/Loader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
@@ -45,7 +46,8 @@ const SignUp = ({ isVisable }: SignProps) => {
     mode: "onChange",
     resolver: zodResolver(UserSchemaRegister),
   });
-  const { mutate: registerUser, isLoading } = useRegisterUser();
+  const { user, set } = useAuthUser();
+  const { mutate: registerUser, isLoading, error } = useRegisterUser();
   const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
     const { email, password } = userInfo;
     const userPostInfo: UserAuth = {
@@ -53,8 +55,23 @@ const SignUp = ({ isVisable }: SignProps) => {
       password,
     };
     registerUser(userPostInfo, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log(data);
+        set(data?.data?.user);
         navigate("/");
+      },
+      onError: (data) => {
+        console.log(data);
+        toast.error("already an existing account", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       },
     });
   };
@@ -78,63 +95,67 @@ const SignUp = ({ isVisable }: SignProps) => {
     return () => subscribe.unsubscribe();
   });
 
-  if (isLoading) return <Loader />;
-
   return (
-    <motion.form
-      onSubmit={handleSubmit(submiter, (err) => console.log(err))}
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 20, opacity: 0 }}
-      className="text-center space-y-7 "
-    >
-      <div className="space-y-2">
-        <h2 className="text-2xl/9 text-main_color font-semibold">Sing Up</h2>
-        <Text text="Copilot" />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-y-2 items-center gap-x-4">
-        <MainBtn text="Sign in with Google" Icon={google} />
-        <MainBtn text="Sign in with Apple" Icon={apple} />
-      </div>
-      <Swicher />
-      <div className="flex flex-col gap-y-5">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <Input placeholderType="Email" RegisterInput={register} />
-            {errors.email ? <TextError error={errors.email.message} /> : null}
+    <>
+      <motion.form
+        onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full sm:w-fit text-center space-y-7 "
+      >
+        <div className="space-y-2">
+          <h2 className="text-2xl/9 text-main_color font-semibold">Sing Up</h2>
+          <Text text="Copilot" />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-y-2 items-center gap-x-4">
+          <MainBtn text="Sign in with Google" Icon={google} />
+          <MainBtn text="Sign in with Apple" Icon={apple} />
+        </div>
+        <Swicher />
+        <div className="flex flex-col gap-y-5">
+          <div className="flex flex-col gap-y-4">
+            <div>
+              <Input placeholderType="Email" RegisterInput={register} />
+              {errors.email ? <TextError error={errors.email.message} /> : null}
+            </div>
+            <div>
+              <Input placeholderType="Password" RegisterInput={register} />
+              {errors.password ? (
+                <TextError error={errors.password.message} />
+              ) : null}
+            </div>
+            <div>
+              <Input
+                placeholderType="Password"
+                placeholderCase="Repeat Password"
+                RegisterInput={register}
+              />
+              {errors.RepeatPassword ? (
+                <TextError error={errors.RepeatPassword.message} />
+              ) : null}
+            </div>
           </div>
-          <div>
-            <Input placeholderType="Password" RegisterInput={register} />
-            {errors.password ? (
-              <TextError error={errors.password.message} />
-            ) : null}
-          </div>
-          <div>
-            <Input
-              placeholderType="Password"
-              placeholderCase="Repeat Password"
-              RegisterInput={register}
-            />
-            {errors.RepeatPassword ? (
-              <TextError error={errors.RepeatPassword.message} />
-            ) : null}
+          <div className="flex justify-start w-full">
+            <AcceptTerms text="I Accept the " dist={dist} />
           </div>
         </div>
-        <div className="flex justify-start w-full">
-          <AcceptTerms text="I Accept the " dist={dist} />
+        <SignBtn
+          text="Sign Up"
+          isLoading={isLoading}
+          disable={
+            !emailValidation ||
+            !passwordValidation ||
+            !confirmPasswordValidation
+          }
+        />
+        <div className="flex justify-center gap-x-1">
+          <Text text="Already have an Account?" />
+          <LinkSwitcher to="/auth" text="Sign In" onClick={isVisable} />
         </div>
-      </div>
-      <SignBtn
-        text="Sign Up"
-        disable={
-          !emailValidation || !passwordValidation || !confirmPasswordValidation
-        }
-      />
-      <div className="flex justify-center gap-x-1">
-        <Text text="Already have an Account?" />
-        <LinkSwitcher to="/auth" text="Sign Up" onClick={isVisable} />
-      </div>
-    </motion.form>
+      </motion.form>
+      {error ? <ToastContainer theme="colored" /> : null}
+    </>
   );
 };
 

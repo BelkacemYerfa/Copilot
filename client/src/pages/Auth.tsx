@@ -2,11 +2,9 @@ import { lazy, useState } from "react";
 import { SignIn } from "../components/Auth/SignIn";
 import NewPassword from "../components/Confirmation/NewPassword";
 import Verify from "../components/Confirmation/Verify";
-import axios from "axios";
 import Wrapper from "../components/wrapper/AnimateWrapper";
 import PageWrapper from "../components/wrapper/PageWrapper";
 import useAxios from "../hooks/useAxios";
-import { authFunct } from "../fetchFunctions/auth";
 const SignUp = lazy(() => import("../components/Auth/SignUp"));
 
 type Post = {
