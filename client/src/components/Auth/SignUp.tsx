@@ -2,7 +2,7 @@ import MainBtn from "../shared/btns/MainBtn";
 import google from "../../assets/icons/google.svg";
 import apple from "../../assets/icons/apple.svg";
 import Text from "../shared/Text/Text";
-import Swicher from "../shared/Switcher/Switcher";
+import Switcher from "../shared/Switcher/Switcher";
 import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import SignBtn from "../shared/btns/SignBtn";
@@ -111,7 +111,7 @@ const SignUp = ({ isVisable }: SignProps) => {
           <MainBtn text="Sign in with Google" Icon={google} />
           <MainBtn text="Sign in with Apple" Icon={apple} />
         </div>
-        <Swicher />
+        <Switcher />
         <form
           onSubmit={handleSubmit(submiter, (err) => console.log(err))}
           className="space-y-3"

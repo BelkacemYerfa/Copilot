@@ -8,6 +8,7 @@ import { VerifyMailContent } from "../static/VerfiyMailContent";
 export const VerifyMail = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+    console.log(email.length);
     const checkUser = await getUserByMail(email);
     if (!checkUser) {
       return res.status(404).json({
@@ -15,6 +16,9 @@ export const VerifyMail = async (req: Request, res: Response) => {
       });
     }
     const verfiyNumber = Math.floor(Math.random() * 1000000);
+    if (verfiyNumber.toString().length < 6) {
+      verfiyNumber.toString().padStart(6, "0");
+    }
     const config: mailConfig = {
       service: "gmail",
       auth: {

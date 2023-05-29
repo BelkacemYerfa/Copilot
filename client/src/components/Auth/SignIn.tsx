@@ -2,7 +2,7 @@ import MainBtn from "../shared/btns/MainBtn";
 import google from "../../assets/icons/google.svg";
 import apple from "../../assets/icons/apple.svg";
 import Text from "../shared/Text/Text";
-import Swicher from "../shared/Switcher/Switcher";
+import Switcher from "../shared/Switcher/Switcher";
 import Input from "../shared/Input/Input";
 import LinkSwitcher from "../shared/Link/LinkSwitcher";
 import SignBtn from "../shared/btns/SignBtn";
@@ -21,6 +21,11 @@ import { expression } from "../../interfaces&types&static/regExEmail";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  useCreaptedPass,
+  useSetCreaptedPass,
+} from "../../hooks/useCreaptedPass";
+import Loader from "../shared/loader/Loader";
 
 export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
@@ -32,7 +37,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   const navigate = useNavigate();
   const [emailValidation, setEmailValidation] = useState<boolean>(false);
   const [passwordValidation, setPasswordValidation] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<unknown>();
+  const [emailValue, setEmailValue] = useState<string>("");
 
   const {
     register,
@@ -42,8 +47,11 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   } = useForm<UserFormSchema>({
     resolver: zodResolver(UserSchemaLogin),
   });
-  const { user, set } = useAuthUser();
-  const { mutate: logUser, isLoading, error } = useLogUser();
+  const { set } = useAuthUser();
+  const { creaptedCode, setCreaptedPass } = useSetCreaptedPass();
+  const { mutate: logUser, isLoading: logLoading, error } = useLogUser();
+  const { mutate: forgotPassword, isLoading: CreaptedLoading } =
+    useCreaptedPass();
   const submiter: SubmitHandler<UserFormSchema> = async (
     userInfo: UserFormSchema
   ) => {
@@ -74,9 +82,10 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   };
   useEffect(() => {
     const subscribe = watch((value) => {
-      if (expression.test(value.email ? value.email : ""))
+      if (expression.test(value.email ? value.email : "")) {
         setEmailValidation(true);
-      else setEmailValidation(false);
+        setEmailValue(value.email ? value.email : "");
+      } else setEmailValidation(false);
       if (value.password?.length ? value.password.length >= 8 : "".length >= 8)
         setPasswordValidation(true);
       else setPasswordValidation(false);
@@ -85,8 +94,21 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
       subscribe.unsubscribe();
     };
   });
-  //if (isLoading) return <Loader />;
-
+  const emailSendVerification = () => {
+    console.log(emailValue);
+    forgotPassword(emailValue, {
+      onSuccess: (data) => {
+        console.log(data?.data?.code);
+        setCreaptedPass({ creaptedCode: "" });
+        console.log(creaptedCode);
+        setCount();
+      },
+      onError: (data) => {
+        console.log(data);
+      },
+    });
+  };
+  if (CreaptedLoading) return <Loader />;
   return (
     <>
       <motion.div
@@ -103,7 +125,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
           <MainBtn text="Sign in with Google" Icon={google} />
           <MainBtn text="Sign in with Apple" Icon={apple} />
         </div>
-        <Swicher />
+        <Switcher />
         <form
           onSubmit={handleSubmit(submiter, (err) => console.log(err))}
           className="space-y-2"
@@ -127,14 +149,13 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
               <LinkSwitcher
                 to="/auth"
                 text="forgot password?"
-                //sendPass={}
-                onClick={emailValidation ? setCount : () => null}
+                onClick={emailValidation ? emailSendVerification : () => null}
               />
             </div>
           </div>
           <SignBtn
             text="Sign In"
-            isLoading={isLoading}
+            isLoading={logLoading}
             disable={!emailValidation || !passwordValidation}
           />
         </form>

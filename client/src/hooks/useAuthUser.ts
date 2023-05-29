@@ -3,7 +3,7 @@ import { UserAuth } from "../interfaces&types&static/User";
 import axios from "axios";
 import { IUser } from "../@types/auth";
 import { useContext } from "react";
-import { AuthContext } from "../context/authContext";
+import { GlobalContext } from "../context/globalContext";
 
 const registerUser = (user: UserAuth) => {
   return axios.post("http://localhost:8000/api/v1/auth/register", user, {
@@ -34,6 +34,6 @@ export const useAuthUser = (): useAuthUserType => {
   const {
     state: { user },
     set,
-  } = useContext(AuthContext);
+  } = useContext(GlobalContext);
   return { user, set };
 };
