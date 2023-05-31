@@ -48,7 +48,7 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     resolver: zodResolver(UserSchemaLogin),
   });
   const { set } = useAuthUser();
-  const { creaptedCode, setCreaptedPass } = useSetCreaptedPass();
+  const { setCreaptedPass } = useSetCreaptedPass();
   const { mutate: logUser, isLoading: logLoading, error } = useLogUser();
   const { mutate: forgotPassword, isLoading: CreaptedLoading } =
     useCreaptedPass();
@@ -96,11 +96,10 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
   });
   const emailSendVerification = () => {
     console.log(emailValue);
+    set({ email: emailValue, name: "" });
     forgotPassword(emailValue, {
       onSuccess: (data) => {
-        console.log(data?.data?.code);
-        setCreaptedPass({ creaptedCode: "" });
-        console.log(creaptedCode);
+        setCreaptedPass({ creaptedCode: data?.data.pass });
         setCount();
       },
       onError: (data) => {

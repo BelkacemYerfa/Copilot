@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { getUserByMail } from "../models/User";
 import { mailConfig } from "../interfaces/mailConfig";
 import { VerifyMailContent } from "../static/VerfiyMailContent";
+import bcrypt from "bcrypt";
 
 export const VerifyMail = async (req: Request, res: Response) => {
   try {
@@ -45,6 +46,7 @@ export const VerifyMail = async (req: Request, res: Response) => {
     };
     transporter.sendMail(message).then(() => {
       return res.status(201).json({
+        pass: verfiyNumber.toString(),
         msg: "email received successfully",
       });
     });

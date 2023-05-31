@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { GlobalContext } from "../context/globalContext";
 import { useContext } from "react";
+import { UserAuth } from "../interfaces&types&static/User";
 
 const CreateCreaptedPass = (email: string) => {
   return axios.post(
@@ -13,10 +14,21 @@ const CreateCreaptedPass = (email: string) => {
   );
 };
 
+const setNewPass = (user: UserAuth) => {
+  return axios.post("http://localhost:8000/api/v1/auth/newPassword", user, {
+    withCredentials: true,
+  });
+};
+
 export const useCreaptedPass = () => {
   return useMutation(CreateCreaptedPass);
 };
 
+export const useNewPass = () => {
+  return useMutation(setNewPass);
+};
+
+//auth checker pass
 export const useSetCreaptedPass = () => {
   const {
     state: { creaptedCode },

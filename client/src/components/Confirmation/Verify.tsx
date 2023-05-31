@@ -6,39 +6,39 @@ import CodeHolder from "../shared/Input/CodeHolder";
 import { motion } from "framer-motion";
 import MobileSvg from "../shared/animatedSvgs/MobileSvg";
 import { ChangeEvent, useState } from "react";
+import { useSetCreaptedPass } from "../../hooks/useCreaptedPass";
 
 type VerifyProps = {
   text?: string;
   setCount: () => void;
 };
 
-const Verify = ({ text = "746535", setCount }: VerifyProps) => {
+const Verify = ({ text = "******", setCount }: VerifyProps) => {
   const [newCode, setNewCode] = useState<string[]>([]);
-
+  const { creaptedCode } = useSetCreaptedPass();
   return (
     <motion.form
       onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(newCode);
         const CheckNewCode = newCode.join("");
-        console.log(CheckNewCode);
-        if (CheckNewCode === text) {
+        if (CheckNewCode === creaptedCode?.creaptedCode) {
           setCount();
         } else {
-          /* console.log(CheckNewCode); */
+          console.log("error , code is not correct");
         }
       }}
       initial={{ x: "60%" }}
       animate={{ x: 0 }}
       exit={{ x: "-60%" }}
-      className="text-center space-y-7"
+      className="text-center space-y-7 w-full md:w-fit"
     >
       <MobileSvg />
       <div className="space-y-2">
         <h2>Two Step Verification</h2>
         <Text text="Enter the verification code we sent to" />
       </div>
-      <CryptoText text={"*****5"} />
+      <CryptoText text={"******"} />
       <div className="space-y-2">
         <p className="text-sm text-main_color font-semibold">
           Type your 6 digit security code
