@@ -91,7 +91,7 @@ const NewPassword = ({ setCount, setNewCount }: NewPasswordProps) => {
         </div>
         <form
           onSubmit={handleSubmit(submiter, (err) => console.log(err))}
-          className="space-y-4"
+          className="space-y-4 w-full"
         >
           <div>
             <Input placeholderType="Password" RegisterInput={register} />
