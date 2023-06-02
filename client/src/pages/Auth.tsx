@@ -23,17 +23,20 @@ export const Auth = (): JSX.Element => {
       setCount={() => setCount((prev) => prev + 1)}
     />,
     <Verify setCount={() => setCount((prev) => prev + 1)} />,
-    <NewPassword setCount={() => setIsSignIn(!isSignIn)} />,
+    <NewPassword
+      setCount={() => setIsSignIn(!isSignIn)}
+      setNewCount={() => setCount(0)}
+    />,
   ];
-  const fetchData = async () => {
+  /* const fetchData = async () => {
     const result = await fetch("https://jsonplaceholder.typicode.com/posts");
     const data = await result.json();
     return data;
-  };
-  const { data, isLoading } = useAxios<Post[]>({
+  }; */
+  /* const { data, isLoading } = useAxios<Post[]>({
     queryKey: "data",
     fetchFunc: fetchData,
-  }); /* 
+  }); 
   console.log(data); */
   return (
     <PageWrapper checked={true}>

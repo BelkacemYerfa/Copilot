@@ -13,11 +13,14 @@ import TextError from "../shared/Text/TextError";
 import { useEffect, useState } from "react";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { useNewPass } from "../../hooks/useCreaptedPass";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type PasswordConfirmation = z.infer<typeof PasswordVerification>;
 
 interface NewPasswordProps {
   setCount: () => void;
+  setNewCount: () => void;
 }
 
 const dist: Distination = {
@@ -25,7 +28,7 @@ const dist: Distination = {
   to: "/auth",
 };
 
-const NewPassword = ({ setCount }: NewPasswordProps) => {
+const NewPassword = ({ setCount, setNewCount }: NewPasswordProps) => {
   const [isSame, setIsSame] = useState<boolean>(false);
 
   const { user } = useAuthUser();
@@ -38,64 +41,82 @@ const NewPassword = ({ setCount }: NewPasswordProps) => {
     resolver: zodResolver(PasswordVerification),
   });
   const { mutate: newPass, isLoading: newPassLoading } = useNewPass();
-  const submiter: SubmitHandler<PasswordConfirmation> = (data) => {
+  const submiter: SubmitHandler<PasswordConfirmation> = (
+    data: PasswordConfirmation
+  ) => {
     console.log(data);
+    const userInfo = { password: data.password, email: user?.email };
+    newPass(userInfo, {
+      onSuccess: (data) => {
+        toast.success(data.data?.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    });
   };
   useEffect(() => {
     const subscribe = watch((value) => {
-      if (value.Password === value.RepeatPassword) {
-        setIsSame(true);
-      } else {
-        setIsSame(false);
-      }
+      setIsSame(value.password === value.RepeatPassword);
     });
     return () => {
       subscribe.unsubscribe();
     };
   });
   return (
-    <motion.div
-      initial={{ x: "60%" }}
-      animate={{ x: 0 }}
-      exit={{ x: "-60%" }}
-      className="text-center space-y-7 w-full md:w-fit"
-    >
-      <div>
-        <h2 className="text-2xl/9 text-main_color font-semibold">
-          Setup New Password
-        </h2>
-        <div className="flex items-center justify-center gap-x-1">
-          <Text text="Have you already reset the Password?" />
-          <LinkSwitcher to="/auth" text="Sign in" onClick={setCount} />
+    <>
+      <motion.div
+        initial={{ x: "60%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "-60%" }}
+        className="text-center space-y-7 w-full md:w-fit"
+      >
+        <div>
+          <h2 className="text-2xl/9 text-main_color font-semibold">
+            Setup New Password
+          </h2>
+          <div className="flex items-center justify-center gap-x-1">
+            <Text text="Have you already reset the Password?" />
+            <LinkSwitcher to="/auth" text="Sign in" onClick={setNewCount} />
+          </div>
         </div>
-      </div>
-      <form action="" onSubmit={handleSubmit(submiter)} className="space-y-4">
-        <div className="flex flex-col gap-y-5">
-          <div className="flex flex-col gap-y-4">
-            <div>
-              <Input placeholderType="Password" RegisterInput={register} />
-              {errors.Password ? (
-                <TextError error={errors.Password.message} />
-              ) : null}
-            </div>
-            <div>
-              <Input
-                placeholderType="Password"
-                placeholderCase="Repeat Password"
-                RegisterInput={register}
-              />
-              {errors.RepeatPassword ? (
-                <TextError error={errors.RepeatPassword.message} />
-              ) : null}
-            </div>
+        <form
+          onSubmit={handleSubmit(submiter, (err) => console.log(err))}
+          className="space-y-4"
+        >
+          <div>
+            <Input placeholderType="Password" RegisterInput={register} />
+            {errors.password ? (
+              <TextError error={errors.password.message} />
+            ) : null}
+          </div>
+          <div>
+            <Input
+              placeholderType="Password"
+              placeholderCase="Repeat Password"
+              RegisterInput={register}
+            />
+            {errors.RepeatPassword ? (
+              <TextError error={errors.RepeatPassword.message} />
+            ) : null}
           </div>
           <div className="flex justify-start w-full">
             <AcceptTerms text="I Accept the " dist={dist} />
           </div>
-        </div>
-        <SignBtn text="Submit" isLoading={newPassLoading} disable={!isSame} />
-      </form>
-    </motion.div>
+          <SignBtn text="Submit" isLoading={newPassLoading} disable={!isSame} />
+        </form>
+      </motion.div>
+      <ToastContainer position="top-right" />
+    </>
   );
 };
 

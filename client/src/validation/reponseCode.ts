@@ -2,11 +2,11 @@ import { z } from "zod";
 
 export const PasswordVerification = z
   .object({
-    Password: z.string().min(8).nonempty(),
+    password: z.string().min(8).nonempty(),
     RepeatPassword: z.string().min(8).nonempty(),
   })
-  .refine(({ Password, RepeatPassword }) => {
-    if (Password === RepeatPassword) {
+  .refine(({ password, RepeatPassword }) => {
+    if (password === RepeatPassword) {
       return {
         message: "Password and confirm password must be the same",
       };

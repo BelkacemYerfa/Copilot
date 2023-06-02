@@ -46,7 +46,7 @@ const SignUp = ({ isVisable }: SignProps) => {
     mode: "onChange",
     resolver: zodResolver(UserSchemaRegister),
   });
-  const { user, set } = useAuthUser();
+  const { set } = useAuthUser();
   const { mutate: registerUser, isLoading, error } = useRegisterUser();
   const submiter: SubmitHandler<UserFormSchema> = async (userInfo) => {
     const { email, password } = userInfo;

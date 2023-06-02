@@ -15,7 +15,7 @@ const CreateCreaptedPass = (email: string) => {
 };
 
 const setNewPass = (user: UserAuth) => {
-  return axios.post("http://localhost:8000/api/v1/auth/newPassword", user, {
+  return axios.patch("http://localhost:8000/api/v1/auth/newPassword", user, {
     withCredentials: true,
   });
 };
