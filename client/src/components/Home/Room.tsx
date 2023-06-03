@@ -8,14 +8,15 @@ interface RoomProps {
 
 const Room = ({ id }: RoomProps) => {
   const { user } = useAuthUser();
+
   return (
     <section className="relative basis-full md:basis-[80%]  overflow-y-scroll ChatMessagesHolder ">
       <div className="w-full pb-[5.5rem]">
         <ChatMessage userId={user.name} />
       </div>
-      <section className="fixed bottom-0 w-[80%] bg-white ">
-        <section className=" w-[90%] m-auto flex flex-col gap-y-3 ">
-          <section className=" bottom-0 p-4 rounded-md">
+      <section className="fixed bottom-0 w-[80%] tablet:w-full bg-white ">
+        <section className=" w-[90%] tablet:w-full m-auto flex flex-col gap-y-3 ">
+          <section className=" w-full bottom-0 p-4 tablet:p-0 rounded-md">
             <ChatInput />
           </section>
         </section>

@@ -28,7 +28,7 @@ export const ChatInput = () => {
   });
 
   return (
-    <section className="flex w-full items-center bg-auth_bg_main_color rounded-2xl p-3 gap-x-4">
+    <section className="flex w-full items-center bg-auth_bg_main_color rounded-2xl p-3 gap-x-4  ">
       <div className="flex items-center gap-x-2 ">
         <div>
           <img src={Audio} alt="audio Icon" />

@@ -35,7 +35,6 @@ const SideBar = () => {
     window.addEventListener("resize", () => {
       if (window.innerWidth > 640 && window.innerWidth < 760) {
         setResize(true);
-        console.log(window.innerWidth);
       } else setResize(false);
     });
     return () =>
@@ -51,7 +50,7 @@ const SideBar = () => {
         </div>
         <ol
           className={`channelsList space-y-1 w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-btn_border_color ${
-            resize ? "pl-0" : "pl-5"
+            resize ? "pl-3" : "pl-3"
           }`}
         >
           <RoomLink to="/room/1" name="Ai Chat Tool Ethics" resize={resize} />
