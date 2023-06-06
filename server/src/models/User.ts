@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 interface userDocument {
   name: string;
   email: string;
-  profilePicture?: Buffer;
+  profilePicture?: String;
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -21,8 +21,7 @@ export const User = new Schema<userDocument>({
     unique: true,
   },
   profilePicture: {
-    type: Buffer,
-    contentType: String,
+    type: String,
   },
   password: {
     type: String,

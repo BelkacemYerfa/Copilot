@@ -126,23 +126,24 @@ export const CreateNewPassword = async (req: Request, res: Response) => {
         msg: "their no account associated with this email",
       });
     }
+    console.log(check_User.password);
     const salt = await bcrypt.genSalt(12);
     const hash_Password = await bcrypt.hash(password, salt);
-    await updateUser(email, check_User._id.toString(), {
-      name: check_User.name,
-      email: email,
-      password: hash_Password,
-    });
-    const new_user = await getUserByMail(email);
+    check_User.password = hash_Password;
+    check_User.save();
     const currentUser = {
-      email: new_user.email,
-      name: new_user.name,
-      profilePic: new_user.profilePicture,
+      email: check_User.email,
+      name: check_User.name,
+      profilePic: check_User.profilePicture,
     };
-    res.cookie("copilote_auth ", await createJwtAuth(new_user._id.toString()), {
-      domain: "localhost",
-      path: "/",
-    });
+    res.cookie(
+      "copilote_auth ",
+      await createJwtAuth(check_User._id.toString()),
+      {
+        domain: "localhost",
+        path: "/",
+      }
+    );
     return res.status(201).json({
       success: true,
       msg: "user password updated successfully",

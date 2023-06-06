@@ -13,11 +13,13 @@ import { BASE_URL } from "../../interfaces&types&static/Infos";
 import { useNavigate } from "react-router-dom";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import { useEffect, useState } from "react";
+import { useChat } from "../../hooks/useChat";
 
 const SideBar = () => {
   const navigate = useNavigate();
   const [resize, setResize] = useState<boolean>(false);
   const { set } = useAuthUser();
+  const { Rooms } = useChat();
   //you can react-query to make the request using the refetch func and making an option that says it's manual
   const logOutFunc = async () => {
     const { data } = await axios.get(`${BASE_URL}auth/logout`, {
@@ -53,8 +55,15 @@ const SideBar = () => {
             resize ? "pl-3" : "pl-3"
           }`}
         >
-          <RoomLink to="/room/1" name="Ai Chat Tool Ethics" resize={resize} />
-          <RoomLink to="/room/2" name="Ai Chat Tool Ethics" resize={resize} />
+          {Rooms.map((room) => (
+            <RoomLink
+              key={room.id}
+              to={`/room/${room.id}`}
+              name={room.name}
+              resize={resize}
+              highlight={false}
+            />
+          ))}
         </ol>
         <div
           className="absolute bottom-0 w-full left-0 bg-white px-5 
