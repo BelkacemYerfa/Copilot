@@ -50,34 +50,11 @@ export const ChatMessage = ({ userId, messages }: ChatMessageProps) => {
             </div>
             {message.name === "Copilote" ? (
               <div className="flex item-center gap-x-2">
-                <div
-                  className={`flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out hover:bg-white`}
-                >
-                  {/*make this component reusable */}
-                  <img
-                    src={like}
-                    className="cursor-pointer h-4 w-4 "
-                    alt="like"
-                  />
-                </div>
-                <div
-                  className={`flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out hover:bg-white`}
-                >
-                  <img
-                    src={dislike}
-                    className="cursor-pointer h-4 w-4 "
-                    alt="dislike"
-                  />
-                </div>
+                <ChatImageOption src={like} user={message.name} />
+                <ChatImageOption src={dislike} user={message.name} />
               </div>
             ) : (
-              <div className="flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out hover:bg-auth_bg_main_color">
-                <img
-                  src={modify}
-                  className="cursor-pointer h-4 w-4 "
-                  alt="modify"
-                />
-              </div>
+              <ChatImageOption src={modify} user={message.name} />
             )}
           </div>
         </div>
@@ -117,6 +94,23 @@ const WritingAnimation = ({ textArray }: Props) => {
   return (
     <div className="w-full">
       <pre className="w-full">{currentText}</pre>
+    </div>
+  );
+};
+
+interface ChatImageOptionProps {
+  src: string;
+  user: string;
+}
+
+const ChatImageOption = ({ src, user }: ChatImageOptionProps) => {
+  return (
+    <div
+      className={`flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out ${
+        user === "Copilote" ? "hover:bg-white" : "hover:bg-auth_bg_main_color"
+      }`}
+    >
+      <img src={src} className="cursor-pointer h-4 w-4 " alt={src.toString()} />
     </div>
   );
 };
