@@ -1,18 +1,20 @@
 import DefaultHome from "../components/Home/DefaultHome";
 import Room from "../components/Home/Room";
 import SideBar from "../components/Home/Sidebar";
-import { RoomsInfoProvider, initialState } from "../context/ChatContext";
-import { useAuthUser } from "../hooks/useAuthUser";
-import { useParams } from "react-router-dom";
+import { useChat } from "../hooks/useChat";
 
-const Home = () => {
-  const { id } = useParams();
+interface Id {
+  id: string;
+}
+
+const Home = ({ id }: Id) => {
+  const { Rooms } = useChat();
+  const WantedRoom = Rooms.find((room) => room.id === id);
+
   return (
     <section className="flex relative">
-      <RoomsInfoProvider Rooms={initialState.Rooms}>
-        <SideBar />
-        {id ? <Room id={id} /> : <DefaultHome />}
-      </RoomsInfoProvider>
+      <SideBar />
+      {id && WantedRoom?.messages ? <Room id={id} /> : <DefaultHome />}
     </section>
   );
 };

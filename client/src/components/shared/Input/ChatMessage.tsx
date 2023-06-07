@@ -106,11 +106,11 @@ interface ChatImageOptionProps {
 const ChatImageOption = ({ src, user }: ChatImageOptionProps) => {
   return (
     <div
-      className={`flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out ${
+      className={`cursor-pointer flex items-center justify-center w-7 h-7 rounded-lg duration-200 ease-in-out ${
         user === "Copilote" ? "hover:bg-white" : "hover:bg-auth_bg_main_color"
       }`}
     >
-      <img src={src} className="cursor-pointer h-4 w-4 " alt={src.toString()} />
+      <img src={src} className="h-4 w-4 " alt={src.toString()} />
     </div>
   );
 };

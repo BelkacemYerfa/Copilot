@@ -52,6 +52,7 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
   switch (action.type) {
     case REDUCER_ACTIONS.SET_ROOMS_BASIC_DATA:
       return {
+        ...state,
         Rooms: {
           ...state.Rooms,
           [action.payload.id]: {
@@ -61,6 +62,7 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
       };
     case REDUCER_ACTIONS.SET_ROOMS_MESSAGES:
       return {
+        ...state,
         Rooms: {
           ...state.Rooms,
           [action.payload.id]: {
@@ -78,6 +80,7 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
       };
     case REDUCER_ACTIONS.CREATE_ROOM:
       return {
+        ...state,
         Rooms: [...state.Rooms, action.payload],
       };
     default:
@@ -86,7 +89,7 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
 };
 
 type ChildrenType = {
-  children: ReactElement[];
+  children: ReactElement;
 };
 
 const useRoomInfo = (initialState: IStateType) => {
@@ -99,8 +102,17 @@ const useRoomInfo = (initialState: IStateType) => {
   const setRoomMessages = useCallback((Room: IChat) => {
     dispatch({ type: REDUCER_ACTIONS.SET_ROOMS_MESSAGES, payload: Room });
   }, []);
-  const createRoom = useCallback((Room: IChat) => {
-    dispatch({ type: REDUCER_ACTIONS.CREATE_ROOM, payload: Room });
+  const createRoom = useCallback(() => {
+    dispatch({
+      type: REDUCER_ACTIONS.CREATE_ROOM,
+      payload: {
+        id: `${crypto.randomUUID()}`,
+        name: "Ai Chat Tool Ethics",
+        createdAt: "2021-09-30T12:00:00.000Z",
+        updatedAt: "2021-09-30T12:00:00.000Z",
+        messages: [],
+      },
+    });
   }, []);
   const baseUrl = "http://localhost:8000/api/v1";
 
