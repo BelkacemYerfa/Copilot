@@ -27,13 +27,9 @@ const DefaultHome = () => {
           </ModelInfoWrapper>
         </section>
       </section>
-      <section className="fixed bottom-0 w-[80%] bg-white ">
-        <section className=" w-[90%] m-auto flex flex-col gap-y-3 ">
-          <section className=" bottom-0 p-4 rounded-md">
-            <ChatInput />
-          </section>
-        </section>
-      </section>
+      <div className="fixed bottom-0 p-5 w-[80%] flex justify-center">
+        <ChatInput />
+      </div>
     </section>
   );
 };

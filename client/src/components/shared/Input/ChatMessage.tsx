@@ -44,17 +44,13 @@ export const ChatMessage = ({ userId, messages }: ChatMessageProps) => {
                   </div>
                 )}
               </div>
-              <p className="font-normal text-base text-main_color ">
-                {message.message}
-              </p>
+              <audio src={message.message} controls></audio>
             </div>
-            {message.name === "Copilote" ? (
+            {message.name === "Copilote" && (
               <div className="flex item-center gap-x-2">
                 <ChatImageOption src={like} user={message.name} />
                 <ChatImageOption src={dislike} user={message.name} />
               </div>
-            ) : (
-              <ChatImageOption src={modify} user={message.name} />
             )}
           </div>
         </div>

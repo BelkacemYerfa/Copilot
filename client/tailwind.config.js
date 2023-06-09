@@ -5,6 +5,8 @@ export default {
     extend: {
       colors: {
         auth_bg_main_color: "#F7F9FB",
+        border_Color: "#D1D5DB",
+        chat_Input_Bg: "rgba(255, 255, 255 , 0.3)",
         main_color: "#1c1c1c",
         btn_border_color: "rgba(0, 0, 0, 0.1)",
         placeholder_color: "rgba(0, 0, 0, 0.2)",

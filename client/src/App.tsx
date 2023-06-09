@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AnimatedRoutes from "./components/animated/AnimatedRoutes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GlobalProvider, initialState } from "./context/globalContext";
+import Loader from "./components/shared/loader/Loader";
 
 function App() {
   const client = new QueryClient({
@@ -18,7 +19,7 @@ function App() {
     <QueryClientProvider client={client}>
       <div className="font-Inter">
         <Router>
-          <Suspense fallback={<div>loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <GlobalProvider
               user={initialState.user}
               theme={initialState.theme}

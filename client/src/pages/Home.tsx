@@ -10,7 +10,6 @@ interface Id {
 const Home = ({ id }: Id) => {
   const { Rooms } = useChat();
   const WantedRoom = Rooms.find((room) => room.id === id);
-
   return (
     <section className="flex relative">
       <SideBar />

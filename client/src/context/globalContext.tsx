@@ -99,8 +99,6 @@ export const GlobalProvider = ({
     if (data?.user) {
       set(data.user);
       navigate("/");
-    } else {
-      navigate("/auth");
     }
   }, [data]);
   if (isLoading) return <Loader />;

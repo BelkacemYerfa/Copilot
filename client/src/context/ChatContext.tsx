@@ -18,7 +18,8 @@ export let initialState: IStateType = {
       messages: [
         {
           id: "1",
-          message: "Hello",
+          message:
+            "https://www.youtube.com/watch?v=A4_TFHzqAAg&ab_channel=Fireship",
           createdAt: "2021-09-30T12:00:00.000Z",
           updatedAt: "2021-09-30T12:00:00.000Z",
           name: "John Doe",
@@ -27,7 +28,8 @@ export let initialState: IStateType = {
         },
         {
           id: "2",
-          message: "Hello , I'm Copilote",
+          message:
+            "https://www.youtube.com/watch?v=A4_TFHzqAAg&ab_channel=Fireship",
           createdAt: "2021-09-30T12:00:00.000Z",
           updatedAt: "2021-09-30T12:00:00.000Z",
           name: "Copilote",
@@ -63,20 +65,17 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
     case REDUCER_ACTIONS.SET_ROOMS_MESSAGES:
       return {
         ...state,
-        Rooms: {
-          ...state.Rooms,
-          [action.payload.id]: {
-            ...state.Rooms.map((room) => {
-              if (room.id === action.payload.id) {
-                return {
-                  ...room,
-                  messages: action.payload.messages,
-                };
-              }
-              return room;
-            }),
-          },
-        },
+        Rooms: [
+          ...state.Rooms.map((room) => {
+            if (room.id === action.payload.id) {
+              return {
+                ...room,
+                messages: action.payload.messages,
+              };
+            }
+            return room;
+          }),
+        ],
       };
     case REDUCER_ACTIONS.CREATE_ROOM:
       return {
@@ -139,7 +138,7 @@ export const RoomsInfoProvider = ({
   const { state, setRoomInfo, setRoomMessages, createRoom, baseUrl } =
     useRoomInfo(initialState);
   const { data, isLoading } = useQuery(["user"], async () => {
-    const { data } = await axios.get(`${baseUrl}/getRoomRelatedInfo`, {
+    const { data } = await axios.get(`${baseUrl}/getAllRooms`, {
       withCredentials: true,
     });
     return data;

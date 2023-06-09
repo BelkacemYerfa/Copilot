@@ -4,14 +4,7 @@ import NewPassword from "../components/Confirmation/NewPassword";
 import Verify from "../components/Confirmation/Verify";
 import Wrapper from "../components/wrapper/AnimateWrapper";
 import PageWrapper from "../components/wrapper/PageWrapper";
-import useAxios from "../hooks/useAxios";
 const SignUp = lazy(() => import("../components/Auth/SignUp"));
-
-type Post = {
-  id: number;
-  title: string;
-  body: string;
-};
 
 export const Auth = (): JSX.Element => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
