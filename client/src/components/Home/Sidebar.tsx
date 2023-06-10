@@ -15,7 +15,12 @@ import { useAuthUser } from "../../hooks/useAuthUser";
 import { useEffect, useState } from "react";
 import { useChat } from "../../hooks/useChat";
 
-const SideBar = () => {
+interface SideBarProps {
+  highlight: boolean;
+  setId: (id: string) => void;
+}
+
+const SideBar = ({ highlight, setId }: SideBarProps) => {
   const navigate = useNavigate();
   const [resize, setResize] = useState<boolean>(false);
   const { set } = useAuthUser();
@@ -58,10 +63,11 @@ const SideBar = () => {
           {Rooms.map((room) => (
             <RoomLink
               key={room.id}
+              setId={() => setId(room.id)}
               to={`/room/${room.id}`}
               name={room.name}
               resize={resize}
-              highlight={false}
+              highlight={highlight}
             />
           ))}
         </ol>

@@ -1,16 +1,10 @@
 export interface IChat {
   id: string;
   name: string;
-  messages: IUserChat[];
-  createdAt?: string;
-  updatedAt?: string;
+  messages: IMessage[];
 }
 
-export interface IUserChat {
-  id: string;
-  name: string;
-  profilePicture?: string;
-  message: string;
-  createdAt?: string;
-  updatedAt?: string;
+export interface IMessage {
+  question: string;
+  answer: string;
 }

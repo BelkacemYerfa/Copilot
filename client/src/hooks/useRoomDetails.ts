@@ -6,7 +6,7 @@ interface RoomDetailsProps<T> {
   fetchRoomDetails: (roomId: string) => Promise<T>;
 }
 
-const createRoom = () => {
+const createRoom = (room: string) => {
   return axios.post(
     "http://localhost:8000/api/v1/createRoom",
     {},

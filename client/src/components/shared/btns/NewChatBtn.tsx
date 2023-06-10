@@ -24,12 +24,24 @@ export const NewChatBtn = ({ text, Icon, resize }: NewChatBtnProps) => {
         resize ? "p-3" : "p-0"
       }`}
       onClick={() => {
-        createNewRoom();
+        createNewRoom("", {
+          onSuccess: (data) => {
+            console.log(data.data);
+            createRoom(data.data.room);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        });
         console.log(Rooms);
       }}
     >
       {isLoading ? (
-        <ColorRing />
+        <ColorRing
+          height={28}
+          width={28}
+          colors={["#fff", "#fff", "#fff", "#fff", "#fff"]}
+        />
       ) : (
         <>
           <div>{Icon && <img src={Icon} alt={text} />}</div>

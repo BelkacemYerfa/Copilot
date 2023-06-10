@@ -62,7 +62,9 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
     };
     logUser(userPostInfo, {
       onSuccess: (data) => {
+        console.log(data.data.user);
         set(data?.data.user);
+
         navigate("/");
       },
       onError: (data) => {

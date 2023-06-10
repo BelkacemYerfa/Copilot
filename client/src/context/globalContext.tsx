@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/shared/loader/Loader";
 import { ICreapted } from "../@types/creapted";
+import { useAuthUser } from "../hooks/useAuthUser";
 interface IStateType {
   user: IUser;
   theme: ITheme;
@@ -32,14 +33,12 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
   switch (action.type) {
     case REDUCER_ACTIONS.SET_USER_DATA:
       return {
+        ...state,
         user: action.payload as IUser,
-        theme: state.theme,
-        creaptedCode: state.creaptedCode,
       };
     case REDUCER_ACTIONS.SET_CREAPTED_PASS:
       return {
-        user: state.user,
-        theme: state.theme,
+        ...state,
         creaptedCode: action.payload as ICreapted,
       };
     default:
@@ -53,11 +52,9 @@ type ChildrenType = {
 
 const useAuthContext = (initialState: IStateType) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const set = useCallback(
-    (user: IUser) =>
-      dispatch({ type: REDUCER_ACTIONS.SET_USER_DATA, payload: user }),
-    []
-  );
+  const set = useCallback((user: IUser) => {
+    dispatch({ type: REDUCER_ACTIONS.SET_USER_DATA, payload: user });
+  }, []);
   const setCreaptedPass = useCallback(
     (creaptedPass: ICreapted) =>
       dispatch({
@@ -97,7 +94,6 @@ export const GlobalProvider = ({
   });
   useEffect(() => {
     if (data?.user) {
-      console.log(data.user);
       set(data.user);
       navigate("/");
     } else {

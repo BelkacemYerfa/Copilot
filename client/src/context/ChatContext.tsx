@@ -13,26 +13,10 @@ export let initialState: IStateType = {
     {
       id: "1",
       name: "Ai Chat Tool Ethics",
-      createdAt: "2021-09-30T12:00:00.000Z",
-      updatedAt: "2021-09-30T12:00:00.000Z",
       messages: [
         {
-          id: "1",
-          message:
-            "https://www.youtube.com/watch?v=A4_TFHzqAAg&ab_channel=Fireship",
-          createdAt: "2021-09-30T12:00:00.000Z",
-          updatedAt: "2021-09-30T12:00:00.000Z",
-          name: "John Doe",
-          profilePicture:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/John_Doe%2C_born_John_Nommensen_Duchac.jpg/1200px-John_Doe%2C_born_John_Nommensen_Duchac.jpg",
-        },
-        {
-          id: "2",
-          message:
-            "https://www.youtube.com/watch?v=A4_TFHzqAAg&ab_channel=Fireship",
-          createdAt: "2021-09-30T12:00:00.000Z",
-          updatedAt: "2021-09-30T12:00:00.000Z",
-          name: "Copilote",
+          question: "https://youtu.be/r_0JjYUe5jo",
+          answer: "https://youtu.be/r_0JjYUe5jo",
         },
       ],
     },
@@ -101,16 +85,10 @@ const useRoomInfo = (initialState: IStateType) => {
   const setRoomMessages = useCallback((Room: IChat) => {
     dispatch({ type: REDUCER_ACTIONS.SET_ROOMS_MESSAGES, payload: Room });
   }, []);
-  const createRoom = useCallback(() => {
+  const createRoom = useCallback((Room: IChat) => {
     dispatch({
       type: REDUCER_ACTIONS.CREATE_ROOM,
-      payload: {
-        id: `${crypto.randomUUID()}`,
-        name: "Ai Chat Tool Ethics",
-        createdAt: "2021-09-30T12:00:00.000Z",
-        updatedAt: "2021-09-30T12:00:00.000Z",
-        messages: [],
-      },
+      payload: Room,
     });
   }, []);
   const baseUrl = "http://localhost:8000/api/v1";
@@ -137,18 +115,7 @@ export const RoomsInfoProvider = ({
 }: ChildrenType & IStateType): ReactElement => {
   const { state, setRoomInfo, setRoomMessages, createRoom, baseUrl } =
     useRoomInfo(initialState);
-  const { data, isLoading } = useQuery(["user"], async () => {
-    const { data } = await axios.get(`${baseUrl}/getAllRooms`, {
-      withCredentials: true,
-    });
-    return data;
-  });
-  useEffect(() => {
-    if (data?.Rooms) {
-      setRoomInfo(data.Rooms);
-    }
-  }, [data]);
-  if (isLoading) return <Loader />;
+
   return (
     <RoomsInfoContext.Provider
       value={{ setRoomInfo, setRoomMessages, createRoom, state, baseUrl }}

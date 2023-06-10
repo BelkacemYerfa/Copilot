@@ -11,8 +11,6 @@ const Room = ({ id }: RoomProps) => {
   const { user } = useAuthUser();
   const { Rooms } = useChat();
   const Room = Rooms.find((room) => room.id === id);
-  console.log(Room);
-  console.log(id);
   return (
     <section className="relative basis-full md:basis-[80%]  overflow-y-scroll ChatMessagesHolder scroll-smooth ">
       <div className="w-full pb-[5.5rem]">

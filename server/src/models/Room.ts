@@ -3,9 +3,14 @@ import { Schema, Types, model } from "mongoose";
 export interface roomDocument {
   name?: string;
   creator: Types.ObjectId;
-  content: string[];
+  messages: IMessage[];
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface IMessage {
+  question: string;
+  answer: string;
 }
 
 export const Room = new Schema<roomDocument>({
@@ -17,8 +22,13 @@ export const Room = new Schema<roomDocument>({
     type: Schema.Types.ObjectId,
     ref: "users",
   },
-  content: {
-    type: [String],
+  messages: {
+    type: [
+      {
+        question: String,
+        answer: String,
+      },
+    ],
     default: [],
   },
   createdAt: {

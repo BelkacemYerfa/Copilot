@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AnimatedRoutes from "./components/animated/AnimatedRoutes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { GlobalProvider, initialState } from "./context/globalContext";
+import { GlobalProvider, initialState } from "./context/GlobalContext";
 import Loader from "./components/shared/loader/Loader";
 
 function App() {

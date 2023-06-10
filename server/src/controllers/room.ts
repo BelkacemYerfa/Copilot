@@ -11,19 +11,18 @@ import { getIdFromJWT } from "../models/User";
 export const createNewRoom = async (req: Request, res: Response) => {
   try {
     const userId = await getIdFromJWT(req);
-    console.log(userId);
     const room: roomDocument = {
       creator: userId._id,
-      content: [],
+      messages: [],
     };
     const newRoom = await createRoom(room);
-    const { _id, name } = newRoom;
     res.status(201).json({
       success: true,
       msg: "room is created successfully",
       room: {
-        id: _id,
-        name,
+        id: newRoom._id,
+        name: newRoom.name,
+        messages: newRoom.messages,
       },
     });
   } catch (error) {
@@ -31,6 +30,33 @@ export const createNewRoom = async (req: Request, res: Response) => {
       msg: error,
     });
   }
+};
+
+export const updateRoom = async (req: Request, res: Response) => {
+  try {
+    const { roomId, roomTitle } = req.body;
+    if (!roomId || !roomTitle) {
+      return res.status(400).json({
+        msg: "please check your id",
+      });
+    }
+    const room = await getRoomById(roomId);
+    if (!room) {
+      return res.status(404).json({
+        msf: "room not found",
+      });
+    }
+    room.name = roomTitle;
+    room.save();
+    res.status(201).json({
+      success: true,
+      msg: "room Title Updated",
+      room: {
+        id: room._id,
+        name: room.name,
+      },
+    });
+  } catch {}
 };
 
 export const getRoomContent = async (req: Request, res: Response) => {
@@ -47,13 +73,13 @@ export const getRoomContent = async (req: Request, res: Response) => {
         msg: "the provided id is not referencing any room ",
       });
     }
-    const { _id, content } = room;
+    const { _id, messages } = room;
     res.status(201).json({
       success: true,
       msg: "room's data is fetched successfully",
       room: {
         id: _id,
-        content: content,
+        messages,
       },
     });
   } catch (error) {

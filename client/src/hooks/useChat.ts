@@ -5,7 +5,7 @@ import { useContext } from "react";
 type useChatType = {
   Rooms: IChat[];
   setRoomInfo: (Room: IChat) => void;
-  createRoom: () => void;
+  createRoom: (Room: IChat) => void;
   setRoomMessages: (Room: IChat) => void;
 };
 
