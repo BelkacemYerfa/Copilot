@@ -4,59 +4,17 @@ import like from "../../../assets/icons/like.svg";
 import dislike from "../../../assets/icons/dislike.svg";
 import ai from "../../../assets/icons/ai.svg";
 import modify from "../../../assets/icons/modify.svg";
-import { IUserChat } from "../../../@types/chat";
 
 interface ChatMessageProps {
   userId: string;
-  messages: IUserChat[];
 }
 
-export const ChatMessage = ({ userId, messages }: ChatMessageProps) => {
+export const ChatMessage = ({ userId }: ChatMessageProps) => {
   const {
     user: { name, email },
   } = useAuthUser();
   //get the user user id
-  return (
-    <section className="">
-      {messages.map((message) => (
-        <div
-          key={message.id + message.name}
-          style={{
-            backgroundColor:
-              message.name !== "Copilote" ? "#FFFFFF" : "#F7F9FB",
-          }}
-          className="w-full h-fit p-4 pl-6"
-        >
-          <div className="max-w-[80%] m-auto flex items-start justify-between">
-            <div className="flex items-start gap-x-4">
-              <div>
-                {message.name === "Copilote" ? (
-                  <div>
-                    <img src={ai} alt="ai" className="h-10 w-10" />
-                  </div>
-                ) : (
-                  <div className="rounded-full bg-black h-10 w-10">
-                    <img
-                      src={message?.profilePicture}
-                      className="rounded-full h-full w-full object-cover "
-                      alt={`@${message.name}`}
-                    />
-                  </div>
-                )}
-              </div>
-              <audio src={message.message} controls></audio>
-            </div>
-            {message.name === "Copilote" && (
-              <div className="flex item-center gap-x-2">
-                <ChatImageOption src={like} user={message.name} />
-                <ChatImageOption src={dislike} user={message.name} />
-              </div>
-            )}
-          </div>
-        </div>
-      ))}
-    </section>
-  );
+  return <section className="">hello</section>;
 };
 
 interface Props {
