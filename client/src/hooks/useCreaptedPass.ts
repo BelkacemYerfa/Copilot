@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { GlobalContext } from "../context/globalContext";
+import { GlobalContext } from "../context/GlobalContext";
 import { useContext } from "react";
 import { UserAuth } from "../interfaces&types&static/User";
 

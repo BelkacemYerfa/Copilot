@@ -1,5 +1,6 @@
 import { Date, Schema, Types, model } from "mongoose";
-import jsonwebtoken from "jsonwebtoken";
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
+import { Request } from "express";
 interface userDocument {
   name: string;
   email: string;
@@ -62,3 +63,18 @@ export const createJwtAuth = async (userId: string) =>
   await jsonwebtoken.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
+export const getIdFromJWT = async (req: Request) => {
+  const token = req.cookies.copilote_auth;
+
+  const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+
+  const userId = jsonwebtoken.decode(token) as JwtPayload;
+  let currentUserId: string = "";
+  for (let key in userId) {
+    if (typeof userId[key] === "string") {
+      currentUserId = userId[key];
+    }
+  }
+  const findUser = await getUserById(currentUserId);
+  return findUser;
+};

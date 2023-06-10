@@ -8,7 +8,7 @@ import { UserPrompt } from "../../../validation/ChatInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { useChat } from "../../../hooks/useChat";
-import ReactPlayer from "react-player";
+import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
 
 type UserPromptType = z.infer<typeof UserPrompt>;
 
@@ -17,75 +17,41 @@ interface Id {
 }
 
 export const ChatInput = ({ id }: Id) => {
-  const { Rooms, setRoomMessages } = useChat();
-  const { register, handleSubmit, watch } = useForm<UserPromptType>({
-    resolver: zodResolver(UserPrompt),
+  const {
+    error,
+    interimResult,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+  } = useSpeechToText({
+    continuous: true,
+    useLegacyResults: false,
   });
-  const submiter: SubmitHandler<UserPromptType> = (
-    userPrompt: UserPromptType
-  ) => {
-    Rooms.map((room) => {
-      if (room.id === id) {
-        setRoomMessages({
-          ...room,
-          messages: [
-            ...room.messages,
-            {
-              id: `${crypto.randomUUID()}`,
-              message: userPrompt.input,
-              createdAt: "2021-09-25T12:00:00.000Z",
-              updatedAt: "2021-09-25T12:00:00.000Z",
-              name: "john doe",
-              profilePicture: "https://i.pravatar.cc/150?img=68",
-            },
-            {
-              id: `${crypto.randomUUID()}`,
-              message: userPrompt.input,
-              createdAt: "2021-09-25T12:00:00.000Z",
-              updatedAt: "2021-09-25T12:00:00.000Z",
-              name: "Copilote",
-            },
-          ],
-        });
-      }
-    });
-  };
-  const createAudio = () => {
-    return navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        console.log(stream);
-      });
-  };
+
+  if (error) return <p>Web Speech API is not available in this browser 🤷‍</p>;
+
   return (
-    <section className="flex w-fit p-3 gap-x-4 rounded-xl bg-chat_Input_Bg backdrop-blur-sm border-border_Color border ">
-      <div className="flex items-center gap-x-2 ">
+    <div>
+      {!isRecording ? (
+        <>
+          <div className="">
+            <img src={Audio} alt="audio Btn" onClick={startSpeechToText} />
+          </div>
+        </>
+      ) : (
         <div>
-          <motion.img
-            src={Audio}
-            initial={false}
-            whileHover={{
-              scale: 1.15,
-            }}
-            onClick={createAudio}
-            height={25}
-            width={25}
-            alt="audio Icon"
-          />
+          <p>Recording</p>
+          <button onClick={stopSpeechToText}>stop</button>
+          <ul>
+            {results.map((result) => (
+              <li key={(result as ResultType).timestamp}>
+                {(result as ResultType).transcript}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div>
-          <motion.img
-            src={picture}
-            initial={false}
-            whileHover={{
-              scale: 1.15,
-            }}
-            height={25}
-            width={25}
-            alt="picture Icon"
-          />
-        </div>
-      </div>
-    </section>
+      )}
+    </div>
   );
 };

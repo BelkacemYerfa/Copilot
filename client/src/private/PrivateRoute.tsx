@@ -4,6 +4,5 @@ import { useAuthUser } from "../hooks/useAuthUser";
 export const PrivateRoute = (): JSX.Element => {
   const { user } = useAuthUser();
   console.log(user);
-  console.log("" == null);
-  return user.email ? <Outlet /> : <Navigate to="/auth" />;
+  return user ? <Outlet /> : <Navigate to="/auth" />;
 };

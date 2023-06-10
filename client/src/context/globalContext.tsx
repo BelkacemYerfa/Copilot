@@ -97,8 +97,11 @@ export const GlobalProvider = ({
   });
   useEffect(() => {
     if (data?.user) {
+      console.log(data.user);
       set(data.user);
       navigate("/");
+    } else {
+      navigate("/auth");
     }
   }, [data]);
   if (isLoading) return <Loader />;

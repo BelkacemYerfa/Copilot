@@ -6,12 +6,14 @@ import {
   deleteRoomById,
   getAllRooms,
 } from "../models/Room";
+import { getIdFromJWT } from "../models/User";
 
 export const createNewRoom = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const userId = await getIdFromJWT(req);
+    console.log(userId);
     const room: roomDocument = {
-      creator: userId,
+      creator: userId._id,
       content: [],
     };
     const newRoom = await createRoom(room);

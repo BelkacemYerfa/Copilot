@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useChat } from "../../../hooks/useChat";
+import { useCreateNewRoom } from "../../../hooks/useRoomDetails";
+import { ColorRing } from "react-loader-spinner";
 
 interface NewChatBtnProps {
   text: string;
@@ -9,6 +11,7 @@ interface NewChatBtnProps {
 
 export const NewChatBtn = ({ text, Icon, resize }: NewChatBtnProps) => {
   const { createRoom, Rooms } = useChat();
+  const { mutate: createNewRoom, isLoading } = useCreateNewRoom();
 
   return (
     <motion.button
@@ -21,13 +24,18 @@ export const NewChatBtn = ({ text, Icon, resize }: NewChatBtnProps) => {
         resize ? "p-3" : "p-0"
       }`}
       onClick={() => {
-        createRoom();
-        console.log("create room");
+        createNewRoom();
         console.log(Rooms);
       }}
     >
-      <div>{Icon && <img src={Icon} alt={text} />}</div>
-      {!resize ? <p className="truncate">{text}</p> : null}
+      {isLoading ? (
+        <ColorRing />
+      ) : (
+        <>
+          <div>{Icon && <img src={Icon} alt={text} />}</div>
+          {!resize ? <p className="truncate">{text}</p> : null}
+        </>
+      )}
     </motion.button>
   );
 };

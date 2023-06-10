@@ -32,7 +32,7 @@ export const Room = new Schema<roomDocument>({
 });
 
 export const RoomModel = model("rooms", Room, "rooms");
-//think those functions are better if they were methods of the schema
+//think those functions  are better if they were methods of the schema
 export const getRoomById = async (id: string) => RoomModel.findById(id);
 export const createRoom = async (room: roomDocument) => RoomModel.create(room);
 export const deleteRoomById = async (id: string) =>

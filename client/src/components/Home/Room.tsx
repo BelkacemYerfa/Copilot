@@ -21,7 +21,7 @@ const Room = ({ id }: RoomProps) => {
           messages={Room?.messages ? Room?.messages : []}
         />
       </div>
-      <div className="fixed bottom-0 p-5 w-[80%] flex justify-center">
+      <div className="fixed bottom-0 w-[80%] flex justify-center">
         <ChatInput id={id} />
       </div>
     </section>

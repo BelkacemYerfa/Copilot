@@ -3,7 +3,7 @@ import { UserAuth } from "../interfaces&types&static/User";
 import axios from "axios";
 import { IUser } from "../@types/auth";
 import { useContext } from "react";
-import { GlobalContext } from "../context/globalContext";
+import { GlobalContext } from "../context/GlobalContext";
 
 const registerUser = (user: UserAuth) => {
   return axios.post("http://localhost:8000/api/v1/auth/register", user, {
