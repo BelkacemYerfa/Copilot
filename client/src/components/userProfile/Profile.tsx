@@ -1,12 +1,16 @@
 import { ProfileImage } from "../shared/profile/ProfileImage";
 import { ProfileInfo } from "../shared/profile/ProfileInfo";
 
-const Profile = () => {
+interface ProfileProps {
+  setOpen: () => void;
+}
+
+const Profile = ({ setOpen }: ProfileProps) => {
   return (
     <section className="absolute left-0 top-0 h-full w-screen flex items-center justify-center bg-gray-700/80">
-      <div className="w-[60%] h-[65%] bg-white rounded-xl p-3 flex  gap-x-2">
+      <div className="w-[90%]  md:w-[60%] h-fit sm:h-[65%] bg-white rounded-xl p-3 flex flex-col sm:flex-row gap-x-2">
         <ProfileImage />
-        <ProfileInfo />
+        <ProfileInfo setOpen={setOpen} />
       </div>
     </section>
   );

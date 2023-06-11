@@ -1,21 +1,21 @@
-import { useAuthUser } from "../../../hooks/useAuthUser";
+import { useAuthUser, useUpdateUser } from "../../../hooks/useAuthUser";
 import modify from "../../../assets/icons/modify.svg";
 import { motion } from "framer-motion";
-import { ChangeEvent, EventHandler } from "react";
+import axios from "axios";
+import { useState } from "react";
 
 export const ProfileImage = () => {
   const {
     user: { profilePicture, name },
   } = useAuthUser();
+
   return (
-    <div className="h-full w-1/2 flex items-center justify-center ">
+    <div className="h-full w-full sm:w-1/2 flex items-center justify-center ">
       <div className="relative">
         {profilePicture ? (
           <div className="relative flex flex-col gap-y-3">
             <img
-              height={50}
-              width={50}
-              className="rounded-full"
+              className="rounded-full w-full h-40"
               src={profilePicture}
               alt={name}
             />
@@ -39,10 +39,46 @@ export const ProfileImage = () => {
 };
 
 const ModifyPicture = () => {
-  const SaveFile = (e: any) => {
-    const file = URL.createObjectURL(e.target.files[0]);
-    console.log(file);
+  const {
+    user: { name, email },
+    set,
+  } = useAuthUser();
+  const { mutate: updateProfilePicture, isLoading } = useUpdateUser();
+
+  const saveFile = async (e: any) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+
+    if (file) {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "jtbx0fay");
+
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dz2kakc9y/image/upload",
+          formData
+        );
+        const updatedUser = {
+          name,
+          email,
+          profilePicture: response.data.secure_url,
+        };
+        updateProfilePicture(updatedUser, {
+          onSuccess: (data) => {
+            console.log(data.data);
+            set(data.data.user);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
+
   return (
     <motion.div
       whileHover={{
@@ -62,10 +98,11 @@ const ModifyPicture = () => {
           <img src={modify} alt="modify" />
         </div>
         <input
-          onChange={(e) => SaveFile(e)}
+          onChange={(e) => saveFile(e)}
           id="dropzone-file"
           type="file"
           className="hidden"
+          accept="image/*"
         />
       </label>
     </motion.div>

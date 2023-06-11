@@ -19,3 +19,18 @@ export const UserSchemaLogin = z.object({
   email: z.string().email().nonempty().trim(),
   password: z.string().min(8).nonempty(),
 });
+
+export const UserProfile = z
+  .object({
+    name: z.string().max(10).min(3).trim().optional(),
+    email: z.string().email().trim().optional(),
+    oldPassword: z.string().min(8).optional(),
+    newPassword: z.string().min(8).optional(),
+  })
+  .refine(({ oldPassword, newPassword }) => {
+    if (oldPassword === newPassword) {
+      return {
+        message: "Password and confirm password must be the same",
+      };
+    }
+  });

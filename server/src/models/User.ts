@@ -1,6 +1,7 @@
-import { Date, Schema, Types, model } from "mongoose";
+import { Date, Schema, model } from "mongoose";
 import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
 import { Request } from "express";
+import bcrypt from "bcrypt";
 interface userDocument {
   name: string;
   email: string;
@@ -8,7 +9,6 @@ interface userDocument {
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-  rooms?: Types.ObjectId[];
 }
 
 export const User = new Schema<userDocument>({
@@ -36,12 +36,6 @@ export const User = new Schema<userDocument>({
     type: Date,
     default: Date.now(),
   },
-  rooms: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "rooms",
-    },
-  ],
 });
 
 export const UserModel = model("users", User, "users");
@@ -65,9 +59,6 @@ export const createJwtAuth = async (userId: string) =>
   });
 export const getIdFromJWT = async (req: Request) => {
   const token = req.cookies.copilote_auth;
-
-  const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-
   const userId = jsonwebtoken.decode(token) as JwtPayload;
   let currentUserId: string = "";
   for (let key in userId) {
@@ -77,4 +68,9 @@ export const getIdFromJWT = async (req: Request) => {
   }
   const findUser = await getUserById(currentUserId);
   return findUser;
+};
+export const creaptePassword = async (password: string) => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  return hashedPassword;
 };

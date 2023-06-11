@@ -1,4 +1,4 @@
-import { updateProfile } from "controllers/profile";
+import { updateProfile } from "../controllers/profile";
 import { isAuthenticated } from "../middlewares/isAuthunticated";
 import { Router } from "express";
 

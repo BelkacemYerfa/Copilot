@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { Configuration, OpenAIApi } from "openai";
-import { createRoom } from "../models/Room";
 
 export const gptText = async (req: Request, res: Response) => {
   try {

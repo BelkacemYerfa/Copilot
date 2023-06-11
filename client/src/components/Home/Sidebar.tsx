@@ -65,10 +65,7 @@ const SideBar = () => {
       </div>
       {open ? (
         <div className="w-full h-screen">
-          <button className="absolute z-10" onClick={() => setOpen(false)}>
-            Close
-          </button>
-          <Profile />
+          <Profile setOpen={() => setOpen(false)} />
         </div>
       ) : null}
     </section>

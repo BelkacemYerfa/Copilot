@@ -11,6 +11,17 @@ const registerUser = (user: UserAuth) => {
   });
 };
 
+interface IUpUser extends IUser {
+  oldPassword?: string;
+  newPassword?: string;
+}
+
+const UpdateUser = (user: Partial<IUpUser>) => {
+  return axios.patch("http://localhost:8000/api/v1/updateProfile", user, {
+    withCredentials: true,
+  });
+};
+
 const loginUser = (user: UserAuth) => {
   return axios.post("http://localhost:8000/api/v1/auth/login", user, {
     withCredentials: true,
@@ -19,6 +30,10 @@ const loginUser = (user: UserAuth) => {
 
 export const useLogUser = () => {
   return useMutation(loginUser);
+};
+
+export const useUpdateUser = () => {
+  return useMutation(UpdateUser);
 };
 
 export const useRegisterUser = () => {
