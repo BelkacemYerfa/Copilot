@@ -3,12 +3,7 @@ import { LogUser, LogoutUser, RegisterUser, checkAuth } from "./auth";
 import verify from "./verify";
 import passwordUpdate from "./passwordUpdate";
 import { generateGptResponse } from "./gpt";
-import {
-  DeleteRoomRouter,
-  createRoomRouter,
-  getAllRoomDetails,
-  getRoomRouter,
-} from "./room";
+import { updateUserProfileInfo } from "./user";
 
 const router = Router();
 
@@ -20,9 +15,6 @@ export default (): typeof router => {
   verify(router);
   passwordUpdate(router);
   generateGptResponse(router);
-  getRoomRouter(router);
-  DeleteRoomRouter(router);
-  getAllRoomDetails(router);
-  createRoomRouter(router);
+  updateUserProfileInfo(router);
   return router;
 };

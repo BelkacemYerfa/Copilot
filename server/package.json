@@ -32,6 +32,7 @@
     "@types/node": "^18.15.11",
     "@types/nodemailer": "^6.4.7",
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.37.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
