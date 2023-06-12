@@ -26,6 +26,7 @@ import {
   useSetCreaptedPass,
 } from "../../hooks/useCreaptedPass";
 import Loader from "../shared/loader/Loader";
+import { InputEnum } from "../../interfaces&types&static/inputEnum";
 
 export type UserFormSchema = z.infer<typeof UserSchemaLogin>;
 
@@ -134,13 +135,21 @@ export const SignIn = ({ isVisable, setCount }: SingInProps) => {
           <div className="flex flex-col gap-y-2">
             <div className="flex flex-col gap-y-4">
               <div>
-                <Input placeholderType="Email" RegisterInput={register} />
+                <Input
+                  placeholderType="Email"
+                  inputType={InputEnum.EMAIL}
+                  RegisterInput={register}
+                />
                 {errors.email ? (
                   <TextError error={errors.email.message} />
                 ) : null}
               </div>
               <div>
-                <Input placeholderType="Password" RegisterInput={register} />
+                <Input
+                  placeholderType="Password"
+                  inputType={InputEnum.PASSWORD}
+                  RegisterInput={register}
+                />
                 {errors.password ? (
                   <TextError error={errors.password.message} />
                 ) : null}

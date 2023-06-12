@@ -186,6 +186,7 @@ export const LogVerification = async (req: Request, res: Response) => {
     const currentUser = {
       name: findUser.name,
       email: findUser.email,
+      profilePicture: findUser.profilePicture,
     };
     res.status(200).json({
       success: true,

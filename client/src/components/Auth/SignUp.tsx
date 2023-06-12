@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { expression } from "../../interfaces&types&static/regExEmail";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { InputEnum } from "../../interfaces&types&static/inputEnum";
 
 type UserFormSchema = z.infer<typeof UserSchemaRegister>;
 
@@ -119,13 +120,21 @@ const SignUp = ({ isVisable }: SignProps) => {
           <div className="flex flex-col gap-y-5">
             <div className="flex flex-col gap-y-4">
               <div>
-                <Input placeholderType="Email" RegisterInput={register} />
+                <Input
+                  placeholderType="Email"
+                  inputType={InputEnum.EMAIL}
+                  RegisterInput={register}
+                />
                 {errors.email ? (
                   <TextError error={errors.email.message} />
                 ) : null}
               </div>
               <div>
-                <Input placeholderType="Password" RegisterInput={register} />
+                <Input
+                  placeholderType="Password"
+                  inputType={InputEnum.PASSWORD}
+                  RegisterInput={register}
+                />
                 {errors.password ? (
                   <TextError error={errors.password.message} />
                 ) : null}
@@ -134,6 +143,7 @@ const SignUp = ({ isVisable }: SignProps) => {
                 <Input
                   placeholderType="Password"
                   placeholderCase="Repeat Password"
+                  inputType={InputEnum.PASSWORD}
                   RegisterInput={register}
                 />
                 {errors.RepeatPassword ? (

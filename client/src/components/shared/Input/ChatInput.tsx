@@ -7,16 +7,11 @@ import { SubmitHandler } from "react-hook-form";
 import { UserPrompt } from "../../../validation/ChatInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { useChat } from "../../../hooks/useChat";
 import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
 
 type UserPromptType = z.infer<typeof UserPrompt>;
 
-interface Id {
-  id?: string;
-}
-
-export const ChatInput = ({ id }: Id) => {
+export const ChatInput = () => {
   const {
     error,
     interimResult,
@@ -24,9 +19,11 @@ export const ChatInput = ({ id }: Id) => {
     results,
     startSpeechToText,
     stopSpeechToText,
+    setResults,
   } = useSpeechToText({
     continuous: true,
     useLegacyResults: false,
+    timeout: 1000,
   });
 
   if (error) return <p>Web Speech API is not available in this browser 🤷‍</p>;

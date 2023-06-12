@@ -2,16 +2,18 @@ type InputProps = {
   placeholderType: string;
   placeholderCase?: string;
   RegisterInput: any;
+  inputType: string;
 };
 
 const Input = ({
   placeholderType,
   placeholderCase,
   RegisterInput,
+  inputType,
 }: InputProps) => {
   return (
     <input
-      type={placeholderType.toLowerCase() || placeholderCase}
+      type={inputType}
       placeholder={placeholderType}
       {...RegisterInput(
         `${

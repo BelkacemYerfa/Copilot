@@ -5,11 +5,7 @@ import dislike from "../../../assets/icons/dislike.svg";
 import ai from "../../../assets/icons/ai.svg";
 import modify from "../../../assets/icons/modify.svg";
 
-interface ChatMessageProps {
-  userId: string;
-}
-
-export const ChatMessage = ({ userId }: ChatMessageProps) => {
+export const ChatMessage = () => {
   const {
     user: { name, email },
   } = useAuthUser();
@@ -21,6 +17,7 @@ interface Props {
   textArray: string[];
 }
 
+//make this writing animation a Mini react project
 const WritingAnimation = ({ textArray }: Props) => {
   const [currentText, setCurrentText] = useState("");
   const [letterCount, setLetterCount] = useState(0);

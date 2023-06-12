@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/shared/loader/Loader";
 import { ICreapted } from "../@types/creapted";
-import { useAuthUser } from "../hooks/useAuthUser";
 interface IStateType {
   user: IUser;
   theme: ITheme;
@@ -14,7 +13,7 @@ interface IStateType {
 }
 
 export let initialState: IStateType = {
-  user: { name: "", email: "" },
+  user: { name: "", email: "", profilePicture: "" },
   theme: { theme: "" },
   creaptedCode: { creaptedCode: "" },
 };

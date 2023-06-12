@@ -6,17 +6,27 @@ export const updateProfile = async (req: Request, res: Response) => {
     const userId = await getIdFromJWT(req);
     const { name, email, password, profilePicture } = req.body;
     const user = await getUserById(userId._id.toString());
+    //console.log(req.body);
     if (!user) {
       return res.status(404).json({
         msg: "User not found",
       });
     }
-    user.name = name || user.name;
-    user.email = email || user.email;
-    user.password = (await creaptePassword(password)) || user.password;
-    user.profilePicture = profilePicture || user.profilePicture;
+    if (name) {
+      user.name = name;
+    }
+    if (email) {
+      user.email = email;
+    }
+    if (password) {
+      const salt = await creaptePassword(password);
+      user.password = salt;
+    }
+    if (profilePicture) {
+      user.profilePicture = profilePicture;
+    }
     await user.save();
-    return res.status(200).json({
+    res.status(200).json({
       msg: "User updated successfully",
       user: {
         name: user.name,
@@ -26,7 +36,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     });
   } catch (error) {
     return res.status(500).json({
-      msg: error,
+      msg: "there is an error",
     });
   }
 };

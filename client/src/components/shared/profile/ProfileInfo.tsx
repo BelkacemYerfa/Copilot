@@ -5,6 +5,7 @@ import SignBtn from "../btns/SignBtn";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InputEnum } from "../../../interfaces&types&static/inputEnum";
 
 type UserProfileFormSchema = z.infer<typeof UserProfile>;
 
@@ -39,7 +40,7 @@ export const ProfileInfo = ({ setOpen }: ProfileInfoProps) => {
     });
   };
   return (
-    <div className="flex flex-col gap-y-2 w-full sm:w-1/2 p-3">
+    <div className="flex justify-center flex-col gap-y-2 w-full sm:w-1/2 p-3">
       <h1 className="text-2xl font-semibold">Profile Info</h1>
       <form
         action=""
@@ -53,6 +54,7 @@ export const ProfileInfo = ({ setOpen }: ProfileInfoProps) => {
           <Input
             placeholderType={user.name}
             placeholderCase="name"
+            inputType={InputEnum.TEXT}
             RegisterInput={register}
           />
         </div>
@@ -63,6 +65,7 @@ export const ProfileInfo = ({ setOpen }: ProfileInfoProps) => {
           <Input
             placeholderType={user.email}
             placeholderCase="email"
+            inputType={InputEnum.EMAIL}
             RegisterInput={register}
           />
         </div>
@@ -73,6 +76,7 @@ export const ProfileInfo = ({ setOpen }: ProfileInfoProps) => {
           <Input
             placeholderType={"Old Password"}
             placeholderCase="oldPassword"
+            inputType={InputEnum.PASSWORD}
             RegisterInput={register}
           />
         </div>
@@ -83,6 +87,7 @@ export const ProfileInfo = ({ setOpen }: ProfileInfoProps) => {
           <Input
             placeholderType={"New Password"}
             placeholderCase="newPassword"
+            inputType={InputEnum.PASSWORD}
             RegisterInput={register}
           />
         </div>
