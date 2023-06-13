@@ -4,13 +4,18 @@ import like from "../../../assets/icons/like.svg";
 import dislike from "../../../assets/icons/dislike.svg";
 import ai from "../../../assets/icons/ai.svg";
 import modify from "../../../assets/icons/modify.svg";
+import { useMessageUser } from "../../../hooks/useMessageUser";
+import { UserMessageContent } from "../audio/UserMessageContent";
 
 export const ChatMessage = () => {
   const {
-    user: { name, email },
-  } = useAuthUser();
+    userPrompt: { message },
+  } = useMessageUser();
+  if (message) {
+    console.log(message);
+  }
   //get the user user id
-  return <section className="">hello</section>;
+  return <section className="relative">{message}</section>;
 };
 
 interface Props {

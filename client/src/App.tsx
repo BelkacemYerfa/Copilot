@@ -24,6 +24,7 @@ function App() {
               user={initialState.user}
               theme={initialState.theme}
               creaptedCode={initialState.creaptedCode}
+              userPrompt={initialState.userPrompt}
             >
               <AnimatedRoutes />
             </GlobalProvider>

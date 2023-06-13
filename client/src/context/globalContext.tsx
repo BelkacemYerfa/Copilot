@@ -1,5 +1,5 @@
 import { ReactElement, createContext, useCallback, useReducer } from "react";
-import { IUser, ITheme } from "../@types/auth";
+import { IUser, ITheme, IPrompt } from "../@types/auth";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
@@ -10,22 +10,25 @@ interface IStateType {
   user: IUser;
   theme: ITheme;
   creaptedCode: ICreapted;
+  userPrompt: IPrompt;
 }
 
 export let initialState: IStateType = {
   user: { name: "", email: "", profilePicture: "" },
   theme: { theme: "" },
   creaptedCode: { creaptedCode: "" },
+  userPrompt: { message: "" },
 };
 
 const enum REDUCER_ACTIONS {
   SET_USER_DATA,
   SET_CREAPTED_PASS,
+  SET_USER_PROMPT_MESSAGE,
 }
 
 type Reducer_Action = {
   type: REDUCER_ACTIONS;
-  payload: IUser | ICreapted;
+  payload: IUser | ICreapted | IPrompt;
 };
 
 const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
@@ -39,6 +42,11 @@ const reducer = (state: IStateType, action: Reducer_Action): IStateType => {
       return {
         ...state,
         creaptedCode: action.payload as ICreapted,
+      };
+    case REDUCER_ACTIONS.SET_USER_PROMPT_MESSAGE:
+      return {
+        ...state,
+        userPrompt: action.payload as IPrompt,
       };
     default:
       throw new Error();
@@ -62,28 +70,36 @@ const useAuthContext = (initialState: IStateType) => {
       }),
     []
   );
+  const setUserPrompt = useCallback((message: IPrompt) => {
+    dispatch({
+      type: REDUCER_ACTIONS.SET_USER_PROMPT_MESSAGE,
+      payload: message,
+    });
+  }, []);
   const baseUrl = "http://localhost:8000/api/v1";
 
-  return { state, set, baseUrl, setCreaptedPass };
+  return { state, set, baseUrl, setCreaptedPass, setUserPrompt };
 };
 
-type AuthContextType = ReturnType<typeof useAuthContext>;
+type GlobalContextType = ReturnType<typeof useAuthContext>;
 
-const initialContextState: AuthContextType = {
+const initialContextState: GlobalContextType = {
   state: initialState,
   set: () => {},
   setCreaptedPass: () => {},
+  setUserPrompt: () => {},
   baseUrl: "",
 };
 
 export const GlobalContext =
-  createContext<AuthContextType>(initialContextState);
+  createContext<GlobalContextType>(initialContextState);
 
 export const GlobalProvider = ({
   children,
   ...initialState
 }: ChildrenType & IStateType): ReactElement => {
-  const { state, set, baseUrl, setCreaptedPass } = useAuthContext(initialState);
+  const { state, set, baseUrl, setCreaptedPass, setUserPrompt } =
+    useAuthContext(initialState);
   const navigate = useNavigate();
   const { data, isLoading } = useQuery(["user"], async () => {
     const { data } = await axios.get(`${baseUrl}/islogged`, {
@@ -101,7 +117,9 @@ export const GlobalProvider = ({
   }, [data]);
   if (isLoading) return <Loader />;
   return (
-    <GlobalContext.Provider value={{ set, state, baseUrl, setCreaptedPass }}>
+    <GlobalContext.Provider
+      value={{ set, state, baseUrl, setUserPrompt, setCreaptedPass }}
+    >
       {children}
     </GlobalContext.Provider>
   );

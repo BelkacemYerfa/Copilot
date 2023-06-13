@@ -66,7 +66,7 @@ const ModifyPicture = ({ setIsLoading }: ModifyPictureProps) => {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_preset", "jtbx0fay");
-        setIsLoading!(true);
+
         const response = await axios.post(
           "https://api.cloudinary.com/v1_1/dz2kakc9y/image/upload",
           formData
